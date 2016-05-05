@@ -1,0 +1,258 @@
+C      _____                __
+C     / ___/ /  ___  __ _  / /  ___
+C    / /__/ _ \/ _ \/  V \/ _ \/ _ \
+C    \___/_//_/\___/_/_/_/_.__/\___/
+C    Please refer to Copyright.txt, in Chombo''s root directory.
+
+#include "EBLGIntegrator.H"
+#include "CONSTANTS.H"
+cccccccccccccccc
+      subroutine setsinewave(
+   &     chf_const_realvect[aucenter],
+   &     chf_const_real[aurnot],
+   &     chf_const_real[aupinf],
+   &     chf_const_real[autinf],
+   &     chf_const_vr[auvinf],
+   &     chf_const_vr[aumassfrac],
+   &     chf_const_real[aumach],
+   &     chf_const_real[ausmallness])
+
+      integer ivar
+      real_t PCGS
+#include "SinewaveCommon.fh"
+#include "EBREACTIVECommon.fh"
+#include "EBEOSCommon.fh"
+
+      chf_dterm[
+      centerx = aucenter(0);
+      centery = aucenter(1);
+      centerz = aucenter(2)]
+
+      chf_dterm[
+      vx = auvinf(0);
+      vy = auvinf(1);
+      vz = auvinf(2)]
+
+      pinf = aupinf
+      tinf = autinf
+
+      do ivar = 1,NKK
+        massfrac(ivar) = aumassfrac(ivar-1)
+      enddo
+
+      PCGS = pinf*10d0
+      call CKRHOY(PCGS,tinf,massfrac,ICKWRK,RCKWRK,rhoinf)
+      rhoinf = rhoinf*1000
+
+      rnot = aurnot
+
+      smallr = ausmallness
+      smallu = ausmallness
+      smallp = ausmallness
+
+      mach = aumach
+
+      return
+      end
+ccccccccccccccccccccc
+
+      subroutine sinewaveinit(
+     &    chf_fra[u],
+     &    chf_const_real[dx],
+     &    chf_box[box])
+
+        integer chf_ddecl[i;j;k]
+        integer iv(0:CH_SPACEDIM-1)
+        integer ivar
+        real_t density, energy, momentum(0:CH_SPACEDIM-1), specDense(0:40)
+
+#include "EBREACTIVECommon.fh"
+
+        chf_multido[box;i;j;k]
+
+        chf_dterm[
+        iv(0) = i;
+        iv(1) = j;
+        iv(2) = k]
+
+c       specDense is useless here.. sent just to fill argument
+        call pointsinewaveinit(density, momentum, energy, specDense,40, iv, dx)
+
+        chf_dterm[
+        u(chf_ix[i;j;k],CMOMX) = momentum(0);
+        u(chf_ix[i;j;k],CMOMY) = momentum(1);
+        u(chf_ix[i;j;k],CMOMZ) = momentum(2)]
+
+        u(chf_ix[i;j;k],CRHO) = density
+        u(chf_ix[i;j;k],CENG) = energy
+
+c        print*,'initial energy',energy
+
+        do ivar = 0,NKK-1
+          u(chf_ix[i;j;k],CSPEC1+ivar) = density*Y(ivar+1);
+        enddo
+        chf_enddo
+
+        return
+        end
+ccccccccccccccccccccc
+      subroutine pointsinewaveinit(
+     &    chf_real[density],
+     &    chf_realvect[momentum],
+     &    chf_real[energy],
+     &    chf_vr[specDense],
+     &    chf_const_intvect[iv],
+     &    chf_const_real[dx])
+
+      integer chf_ddecl[i;j;k]
+      integer ivar
+      real_t  chf_ddecl[xval; yval; zval]
+      real_t  chf_ddecl[vx; vy; vz]
+      real_t chf_ddecl[xcenter;ycenter;zcenter]
+      real_t rad0sqr,radsqr,pressure, vtheta, rad, sound, rnotsq
+      real_t normradsq, bumpval,pie, sumvel, ke, d, PCGS
+
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+#include "SinewaveCommon.fh"
+
+      pie = PI
+      chf_dterm[
+      xcenter = centerx;
+      ycenter = centery;
+      zcenter = centerz]
+
+      chf_dterm[
+      i = iv(0);
+      j = iv(1);
+      k = iv(2)]
+
+
+c        chf_dterm[
+c        xval = (i + half)*dx - xcenter;
+c        yval = (j + half)*dx - ycenter;
+c        zval = (k + half)*dx - zcenter]
+
+      chf_dterm[
+      xval = i*dx;
+      yval = j*dx;
+      zval = k*dx]
+
+      d = 0.5 + 0.25*sin(2*pie*xval)
+
+      if ((0 .le. yval) .and. (yval .le. (d-0.1))) then
+         bumpval = 1
+       else if (((d-0.1) .lt. yval) .and. (yval .le. d)) then
+         bumpval = 0.3 - 7*(yval-d)
+       else if ((d .lt. yval) .and. (yval . le. (d+0.1))) then
+         bumpval = 0.3 + 7*(yval-d)
+       else
+         bumpval = 1
+       end if
+
+      pressure = pinf*(one + 0.01*mach*bumpval)
+      PCGS = pressure*10d0
+
+      do ivar = 1,NKK
+        Y(ivar) = initmassfrac(ivar)
+         specDense(ivar-1) = density*Y(ivar)
+      enddo
+
+      call CKRHOY(PCGS,tinf,Y,ICKWRK,RCKWRK,density)
+      density = density*1000  
+
+      chf_dterm[
+      momentum(0) = density*vx;
+      momentum(1) = density*vy;
+      momentum(2) = density*vz]
+
+      chf_dterm[
+      sumvel  = vx*vx;+vy*vy;+vz*vz]
+
+      ke = half*sumvel
+
+      call CKCVCoeff(tinf, ICKWRK, RCKWRK, Cvs, IPolyOrder)
+      call CKCVCoeffAvg(Y,Cvs,a_298,b_298)
+      energy = a_298(IPolyOrder+1)
+      do ivar = 1,IPolyOrder
+        energy = energy + (b_298(ivar))*(temp**ivar)
+      enddo
+      energy = energy*0.0001 + ke
+      energy = energy*density
+
+      return
+      end
+ccccccccccccccccccccc  
+
+      subroutine SLOPEBCS(
+     &     CHF_FRA[dW],
+     &     CHF_CONST_FRA[W],
+     &     CHF_CONST_REAL[dx],
+     &     CHF_CONST_INT[dir],
+     &     CHF_BOX[loBox],
+     &     CHF_CONST_INT[hasLo],
+     &     CHF_BOX[hiBox],
+     &     CHF_CONST_INT[hasHi])
+
+      integer CHF_DDECL[i;j;k],CHF_DDECL[ioff;joff;koff]
+      integer CHF_DDECL[inorm;itan1;itan2],spacedim
+      real_t dvhi,dvlo,dvmin
+
+      spacedim = CH_SPACEDIM
+
+      CHF_DTERM[
+      ioff = CHF_ID(0,dir);
+      joff = CHF_ID(1,dir);
+      koff = CHF_ID(2,dir)]
+
+      CHF_DTERM[
+      inorm = QVELX + dir;
+      itan1 = QVELX + mod(dir + 1,spacedim);
+      itan2 = QVELX + mod(dir + 2,spacedim)]
+
+      if (hasLo .eq. 1) then
+         CHF_MULTIDO[loBox;i;j;k]
+         dW(CHF_IX[i;j;k],QRHO) = zero
+         dW(CHF_IX[i;j;k],QPRES) = zero
+
+c         dvhi = W(CHF_IX[i + ioff;j + joff;k + koff],inorm) -
+c     &        W(CHF_IX[i       ;j       ;k       ],inorm)
+c         dvlo = W(CHF_IX[i       ;j       ;k       ],inorm)*two
+
+c         dvmin = min(two*abs(dvhi),abs(dvlo))*sign(one,dvlo)
+
+c         if (dvlo*dvhi .lt. zero) dvmin = zero
+
+         CHF_DTERM[
+         dW(CHF_IX[i;j;k],inorm) = zero;
+         dW(CHF_IX[i;j;k],itan1) = zero;
+         dW(CHF_IX[i;j;k],itan2) = zero]
+         CHF_ENDDO
+      endif
+
+      if (hasHi .eq. 1) then
+         CHF_MULTIDO[hiBox;i;j;k]
+         dW(CHF_IX[i;j;k],QRHO) = zero
+         dW(CHF_IX[i;j;k],QPRES) = zero
+
+c         dvhi = W(CHF_IX[i       ;j       ;k       ],inorm) -
+c     &        W(CHF_IX[i - ioff;j - joff;k - koff],inorm)
+c         dvlo = -W(CHF_IX[i       ;j       ;k       ],inorm)*two
+
+c         dvmin = min(two*abs(dvhi),abs(dvlo))*sign(one,dvlo)
+
+c         if (dvlo*dvhi .lt. zero) dvmin = zero
+
+         CHF_DTERM[
+         dW(CHF_IX[i;j;k],inorm) = zero;
+         dW(CHF_IX[i;j;k],itan1) = zero;
+         dW(CHF_IX[i;j;k],itan2) = zero]
+         CHF_ENDDO
+      endif
+
+      return
+      end
+
+cccccccccccccccccc
+c      subroutine sinewavebc(CHF_VR[primBC])
+  

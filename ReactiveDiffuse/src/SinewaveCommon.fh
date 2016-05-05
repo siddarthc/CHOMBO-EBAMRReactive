@@ -1,0 +1,19 @@
+#ifdef CH_LANG_CC
+/*
+ *      _______              __
+ *     / ___/ /  ___  __ _  / /  ___
+ *    / /__/ _ \/ _ \/  V \/ _ \/ _ \
+ *    \___/_//_/\___/_/_/_/_.__/\___/
+ *    Please refer to Copyright.txt, in Chombo's root directory.
+ */
+#endif
+
+        real_t mach, rnot, pinf, tinf, rhoinf
+        real_t centerx,centery,centerz, vx,vy,vz
+        real_t initmassfrac(40)
+        real_t vinf(3)
+        common /ebcnsvortexcm/
+     +       centerx,centery,centerz,vx,vy,vz,
+     +       mach, rnot, pinf, tinf, rhoinf
+
+        common /massfraction/ initmassfrac

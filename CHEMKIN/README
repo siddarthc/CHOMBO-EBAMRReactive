@@ -1,0 +1,69 @@
+These are some transport property evaluation codes that
+work with the CHEMKIN library routines.
+
+DTP - evaluates binary diffusion coefficients, mixture
+      thermal conductivity and viscosity, specific heats.
+
+TCON - evaluates mixture thermal diffusivity and deficient
+       species Lewis numbers.
+
+There is a makefile in this directory for rebuilding these
+files.
+
+Supply tran.bin and chem.bin linking files obtained by
+running ckinterp and tranfit on a chem.inp mechanism
+file and using tran.dat and therm.dat data base files.
+
+JES 10/28/03
+
+______________________________________________________________________
+
+To recompile completely use: "make clean" and "make all"
+In the makefile, the dependencies for "make all" are given
+
+Detailed step by step decription of make all:
+
+1. Build Chemkin interpreter (ckinterp):
+        - files needed: ckinterp.f
+ZZ        - compile:      f77 -O2 -c ckinterp.f
+                        f77 -O2 -o ckinterp ckinterp.o
+
+2. Build Chemkin link file (chem.bin):
+        - files needed: ckinterp
+			chem.inp:
+				Mechanism file - here without reactions,
+				only Elemets and species. e.g.:
+				ELEMENTS H C O N END
+
+				SPECIES  H2 O2 CH4 N2 END
+
+				REACTIONS
+				END
+			therm.dat (datafile) 
+        - run:          ./ckinterp
+
+3. Build libs to be included (dmath.o tranlib.o cklib.o):
+	- files needed: dmath.f tranlib.f cklib.f
+	- compile:	f77 -O2 -c dmath.f
+			f77 -O2 -c tranlib.f
+			f77 -O2 -c cklib.f
+	
+4. Build Transport property fitting code (tranfit) including the libs:
+	- files needed: tranfit.f dmath.o tranlib.o cklib.o
+	- compile:	f77 -O2 -c tranfit.f
+			f77 -O2 -o tranfit tranfit.o dmath.o tranlib.o cklib.o
+
+5. Run Transport property fitting code:
+	- files needed:	tranfit, tran.dat
+	- run: 		./tranfit
+
+6. Build transport property evaluation codes:
+	- files needed: dtp.f, tcon.f, tc.f, cklib.o, dmath.o
+	- compile: 	f77 -O2 -c dtp.f
+			f77 -o dtp dtp.o cklib.o dmath.o tranlib.o
+			f77 -O2 -c tc.f
+			f77 -o tc tc.o cklib.o dmath.o tranlib.o
+			f77 -O2 -c tcon.f
+			f77 -o tcon tcon.o cklib.o dmath.o tranlib.o
+
+pintgen 28/10/03

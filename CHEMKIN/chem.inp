@@ -1,0 +1,56 @@
+! H2-O2-AR Reaction Mechnism from Chemical Kinetics of 
+! Hydrocarbon Oxidation in Gaseous Detonations. 
+! Charles K. Westbrook, Combustion and Flame, 46 191-210, (1982)
+
+ELEMENTS H O  END 
+
+SPECIES O2 H2O H O OH H2 HO2 H2O2  END
+
+REACTIONS
+H + O2 => O + OH 1.86E+14 0.00 16790.
+O + OH => H + O2 1.48E+13 0.00 680.
+H2 + O => H + OH 1.82E+10 1.00 8900.
+H + OH => H2 + O 8.32E+09 1.00 6950.
+H2O + O => OH + OH 3.39E+13 0.00 18350.
+OH + OH => H2O + O 3.16E+12 0.00 1100.
+H2O + H => H2 + OH 9.55E+13 0.00 20300.
+H2 + OH => H2O + H 2.19E+13 0.00 5150.
+H2O2 + OH => H2O + HO2 1.00E+13 0.00 1800.
+H2O + HO2 => H2O2 + OH 2.82E+13 0.00 32790.
+HO2 + O => OH + O2 5.01E+13 0.00 1000.
+OH + O2 => HO2 + O 6.46E+13 0.00 56160.
+HO2 + H => OH + OH 2.51E+14 0.00 1900.
+OH + OH => HO2 + H 1.20E+13 0.00 40100.
+HO2 + H => H2 + O2 2.51E+13 0.00 700.
+H2 + O2 => HO2 + H 5.50E+13 0.00 57800.
+HO2 + OH => H2O + O2 5.01E+13 0.00 1000.
+H2O + O2 => HO2 + OH 6.31E+14 0.00 73860.
+H2O2 + O2 => HO2 + HO2 3.98E+13 0.00 42640.
+HO2 + HO2 => H2O2 + O2 1.00E+13 0.00 1000.
+H2O2 + H => HO2 + H2 1.70E+12 0.00 3750.
+HO2 + H2 => H2O2 + H 7.24E+11 0.00 18700.
+H2O + M => H + OH + M 2.19E+16 0.00 105000.
+O2 / 0.4/ H2O /6.5/
+H + OH + M => H2O + M 1.41E+23 -2.00 0.
+O2 /0.4/ H2O /6.5/
+H + O2 + M => HO2 + M 1.66E+15 0.00 -1000.
+O2 /0.4/ H2O /6.5/
+HO2 + M => H + O2 + M 2.29E+15 0.00 45900.
+O2 /0.4/ H2O /6.5/
+H2O2 + M => OH + OH + M 1.20E+17 0.00 45500.
+O2 /0.4/ H2O /6.5/
+OH + OH + M => H2O2 + M 9.12E+14 0.00 -5070.
+O2 /0.4/ H2O /6.5/
+O + H + M => OH + M 1.00E+16 0.00 0.
+O2 /0.4/ H2O /6.5/
+OH + M => O + H + M 7.94E+19 -1.00 103720.
+O2 /0.4/ H2O /6.5/
+O2 + M => O + O + M 5.13E+15 0.00 115000.
+O2 /0.4/ H2O /6.5/
+O + O + M => O2 + M 4.68E+15 -0.28 0.
+O2 /0.4/ H2O /6.5/
+H2 + M => H + H + M 2.19E+14 0.00 96000.
+O2 /0.4/ H2O /6.5/
+H + H + M => H2 + M 3.02E+15 0.00 0.
+O2 /0.4/ H2O /6.5/
+END

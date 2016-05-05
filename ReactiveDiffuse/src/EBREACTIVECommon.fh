@@ -1,0 +1,31 @@
+#ifdef CH_LANG_CC
+/*
+ *      _______              __
+ *     / ___/ /  ___  __ _  / /  ___
+ *    / /__/ _ \/ _ \/  V \/ _ \/ _ \
+ *    \___/_//_/\___/_/_/_/_.__/\___/
+ *    Please refer to Copyright.txt, in Chombo's root directory.
+ */
+#endif
+
+      integer NEL,NK,NREAC,NO,NLITE,LINK,LINKMC,NCHAR,LIN,LOUT,LENIWK,LENWK,lencwk
+      integer LENIMC,LENRMC,Npolyorder
+!real_t smallp,smallr,smallu,smallY, PATM, MaxTempI, MinTempI
+      real_t smallY,PATM,MaxTempI,MinTempI
+
+      parameter ( NEL = 4, NK = 40, NREAC = 300, NO = 4, NLITE = 1)
+      parameter (LINK = 25, LINKMC = 35, NCHAR = 76, LIN =5, LOUT=6)
+      parameter(LENIWK = 17000, LENWK = 14000, lencwk = 500, SMALLY = 1.D-100)
+      parameter(LENIMC =   4*NK + NLITE,LENRMC =  NK*(19 + 2*NO + NO*NLITE) + (NO+15)*NK**2 )
+      parameter(Npolyorder=6)
+
+      integer NKK,MM,II,NFIT,Ipolyorder
+      integer ICKWRK(LENIWK),IMCWRK(LENIMC)
+      character cckwrk(lencwk)*16, ksym(nk)*16
+      real_t X(NK),Y(NK),WT(NK),RCKWRK(LENWK),RMCWRK(LENRMC),cvs(NK,NPolyOrder+1),a_298(NPolyOrder+1),b_298(NPolyOrder),TT(NPolyOrder),TTT(NPolyOrder),Rgas_s(nk)
+      real_t cvsint(NK,NPolyOrder+1), DJK(NK,NK)
+      common /reactive0/ X,Y,WT,RCKWRK,RMCWRK,Rgas_s
+!common /reactive1/ smallp,smallr,smallu, smallY, MaxTempI, MinTempI
+      common /reactive1/ MaxTempI,MinTempI
+      common /reactive2/ NKK,Ipolyorder,DJK
+

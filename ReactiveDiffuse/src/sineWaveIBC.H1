@@ -1,0 +1,93 @@
+#ifdef CH_LANG_CC
+/*
+ *      _______              __
+ *     / ___/ /  ___  __ _  / /  ___
+ *    / /__/ _ \/ _ \/  V \/ _ \/ _ \
+ *    \___/_//_/\___/_/_/_/_.__/\___/
+ *    Please refer to Copyright.txt, in Chombo's root directory.
+ */
+#endif
+
+#ifndef _SINEWAVEIBC_H_
+#define _SINEWAVEIBC_H_
+
+#include  <iostream>
+
+#include "LevelData.H"
+#include "FArrayBox.H"
+#include "Vector.H"
+#include "RealVect.H"
+#include "AMRIO.H"
+#include "EBPhysIBC.H"
+#include "sineWaveF_F.H"
+
+class sineWaveIBC : public EBPhysIBC
+{
+public:
+  virtual ~sineWaveIBC();
+
+  sineWaveIBC(const Real&         a_mach,
+              const RealVect&     a_center,
+              const Real&         a_rnot,
+              const Real&         a_small,
+              const Real&         a_Pinf,
+              const Real&         a_Tinf,
+              const RealVect&     a_Vinf,
+              const Vector<Real>& a_massFrac);
+
+  void define(const ProblemDomain& a_domain,
+              const RealVect&      a_dx);
+
+  ///  For every box in this level, this function is called.
+  void fluxBC(EBFluxFAB&             a_flux,
+              const EBCellFAB&       a_primCenter,
+              const EBCellFAB&       a_primExtrap,
+              const Side::LoHiSide&  a_sd,
+              const Real&            a_time,
+              const EBISBox&         a_ebisBox,
+              const DataIndex&       a_dit,
+              const Box&             a_box,
+              const Box&             a_faceBox,
+              const int&             a_dir);
+
+  // initialize
+  void initialize(LevelData<EBCellFAB>& a_consState,
+                  const EBISLayout& a_ebisl) const;
+
+  // boundary slopes
+  void setBndrySlopes(EBCellFAB&       a_deltaPrim,
+                      const EBCellFAB& a_primState,
+                      const EBISBox&   a_ebisBox,
+                      const Box&       a_box,
+                      const int&       a_dir);
+
+protected:
+  bool m_isFortranCommonSet;
+  bool m_isDefined;
+  Real m_dx;
+  ProblemDomain m_domain;
+  int m_nSpecies;
+  Real m_Pinf,
+  Real m_Tinf,
+  Real m_massFrac,
+  RealVect m_Vinf;
+private:
+  sineWaveIBC()
+   {
+     MayDay::Error("invalid operator");
+   }
+
+  //disallowed for all the usual reasons
+  void operator=(const sineWaveIBC& a_input)
+  {
+    MayDay::Error("invalid operator");
+  }
+  sineWaveIBC(const sineWaveIBC& a_input)
+  {
+    MayDay::Error("invalid operator");
+  }
+
+};
+#endif
+  void define() 
+

@@ -1,0 +1,74 @@
+#problem independent stuff
+artificial_viscosity = 0.1
+cfl = 0.05
+use_mass_redist = 1
+initial_cfl = 0.05
+verbosity = 1
+max_step = 100
+max_time = 0.7
+tag_buffer_size = 3
+refine_thresh = 0.05
+regrid_interval = 2 2 2 2 2 2
+max_dt_growth = 1.1
+dt_tolerance_factor = 1.1
+fixed_dt   = -1
+gamma = 1.4
+domain_length = 1.0 1.0 1.0
+
+#shock_mach = 3
+shock_vel = 1000.0
+#shock_vel = 0.0
+shock_center = 0.15   # was 0.15
+shock_normal = 0
+max_level = 2
+#coarsest grid size
+n_cell =  32 32 32
+ref_ratio = 2 4 4
+block_factor =  4
+max_grid_size = 16
+fill_ratio = 0.75
+
+checkpoint_interval = -1
+plot_interval = 5
+plot_prefix  = plt
+chk_prefix = chk
+###slope switches
+use_Zero_Slopes = 1
+use_fourth_order_slopes = 0
+use_flattening = 0
+use_art_visc   = 1
+
+##redistribution radius
+redist_radius = 1
+
+###geometry flag
+## 1 is a ramp
+which_geom = 1
+shock_backward = 0
+grid_buffer_size = 2
+ramp_normal = 0.0 1.0 0.0
+ramp_alpha = -2.0
+
+## source and diffusive terms
+add_reactionRates = 0
+add_diffusion = 1
+do_only_diffusion = 1
+initialMassFrac = 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 
+preshockpress = 101325.0
+preshocktemp = 300.0
+
+# sine stuff
+center = 0.5 0.5 0
+mach = 0.5
+rnot = 1.0
+smallness = 1e-8
+
+#diffusive solveres stuff
+ebvto_do_lazy_relax = true
+amrmultigrid.num_smooth = 16
+amrmultigrid.num_mg = 1
+amrmultigrid.hang_eps = 1.0e-15
+amrmultigrid.norm_thresh = 1.0e-15
+amrmultigrid.tolerance = 1.0e-15
+amrmultigrid.max_iter = 100
+amrmultigrid.verbosity = 1

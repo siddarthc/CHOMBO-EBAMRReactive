@@ -1,0 +1,2927 @@
+C      _____                __
+C     / ___/ /  ___  __ _  / /  ___
+C    / /__/ _ \/ _ \/  V \/ _ \/ _ \
+C    \___/_//_/\___/_/_/_/_.__/\___/
+C    Please refer to Copyright.txt, in Chombo''s root directory.
+
+#include "EBLGIntegrator.H"
+#include "CONSTANTS.H"
+
+cccccccccccccccc
+
+      SUBROUTINE INITIALIZE_CHEMISTRY()
+
+
+      INTEGER  I,K,ISIZE,KK
+!  logical  ierr,kerr=.false.
+      logical ierr
+      logical kerr, initialized
+!logical kerr = .false.
+      real_t RU, RUC
+      integer LI, LR, LC
+
+#include "EBREACTIVECommon.fh"
+#include "EBEOSCommon.fh"
+
+      kerr = .false.
+!
+!     OPEN THE LINK FILES
+!
+      OPEN(UNIT=LINK, STATUS='OLD',FORM='UNFORMATTED',FILE='chem.bin')
+      OPEN(UNIT=LINKMC, STATUS='OLD',FORM='UNFORMATTED',FILE='tran.bin')
+!
+!Allocate memory for chemKin based routines
+!
+      call CKLEN (LINK, LOUT, LI, LR, LC)
+!      if(LR < LENWK) stop 'LR < LENWK'
+!      if(LI < LENIWK) stop 'LI < LENIWK'
+!      if(LC < lencwk) stop 'LC < lencwk'
+
+      if(LR > LENWK) stop 'LR > LENWK'
+      if(LI > LENIWK) stop 'LI > LENIWK'
+      if(LC > lencwk) stop 'LC > lencwk'
+!
+!     INITIALIZE CHEMKIN
+!
+      CALL CKINIT (LENIWK,LENWK,lencwk,LINK,LOUT,ICKWRK,RCKWRK,CCKWRK)
+      CALL CKINDX (ICKWRK, RCKWRK, MM, NKK, II, NFIT)
+!
+!      nspec = NKK
+      KK = NKK
+!      nspecies = nspec
+!
+      CALL CKSYMS (CCKWRK, lout,KSYM,ierr)
+
+
+      CALL CKRP (ICKWRK, RCKWRK, RU, RUC, PATM)
+      call CKWT(ICKWRK,RCKWRK,WT)
+      do k = 1,NKK
+         Rgas_s(k) = RU/WT(k)
+      enddo
+      Ipolyorder = nfit -2
+      MaxTempI = 5d3; MinTempI=2d2;
+      smallp = 1d-2
+
+
+!      allocate(cvs(NK,IPolyOrder+1))
+!      allocate(cvsint(NK,IPolyOrder+1))
+!      allocate(cvsDer(NK,IPolyOrder))
+!      allocate( cpk(NK),cpkder(NK))
+!      allocate(a_298(IPolyOrder+1),b_298(IPolyOrder))
+!      allocate(TT(IPolyOrder),TTT(IPolyOrder))
+!
+!allocate and prepare Jacobian matrix for implicit chemistry
+!
+!    CALL JAC_CK_allocate(ICKWRK, RCKWRK, MM, KK, II, NFIT)
+
+!
+!  INITIALIZE THE TRANSPORT PACKAGE
+!
+      CALL MCINIT (LINKMC, LOUT, LENIMC, LENRMC, IMCWRK, RMCWRK)
+!  INPUT-
+!    LINKMC  - LOGICAL UNIT NUMBER OF THE LINKING FILE.
+!                  FITTING CODE WRITE TO DEFAULT UNIT 35
+!    LOUT    - LOGICAL UNIT NUMBER FOR PRINTED OUTPUT.
+!    LENIMC  - ACTUAL DIMENSION OF THE INTEGER STORAGE AND WORKING
+!              SPACE, ARRAY IMCWRK(*).  LENIMC MUST BE AT LEAST:
+!                LENIMC = 4*KK + NLITE
+!                 WHERE, KK    = NUMBER OF SPECIES.
+!                        NLITE = NUMBER OF SPECIES WITH MOLECULAR WEIGHT
+!                                LESS THAN 5.
+!    LENRMC  - ACTUAL DIMENSION OF THE FLOATING POINT STORAGE AND
+!              WORKING SPACE, ARRAY RMCWRK(*).  LENRMC MUST BE AT LEAST:
+!                LENRMC = KK*(19 + 2*NO + NO*NLITE) + (NO+15)*KK**2
+!                 WHERE, KK    = NUMBER OF SPECIES.
+!                        NO    = ORDER OF THE POLYNOMIAL FITS,
+!                                DEFAULT, NO=4.
+!                        NLITE = NUMBER OF SPECIES WITH MOLECULAR WEIGHT
+!                                LESS THAN 5.
+!
+!  WORK-
+!    IMCWRK  - ARRAY OF INTEGER STORAGE AND WORK SPACE.  THE STARTING
+!              ADDRESSES FOR THE IMCWRK SPACE ARE STORED IN
+!              COMMON /MCMCMC/.
+!                  DIMENSION IMCWRK(*) AT LEAST LENIMC.
+!    RMCWRK  - ARRAY OF FLOATING POINT STORAGE AND WORK SPACE.  THE
+!              STARTING ADDRESSES FOR THE RMCWRK SPACE ARE STORED IN
+!              COMMON /MCMCMC/.
+!                  DIMENSION RMCWRK(*) AT LEAST LENRMC.
+
+!
+!         SET ALL INITIAL MOLE FRACTIONS TO A SMALL NUMBER
+!         DONt use zero or MS FORTRAN gets upset.
+!      
+      call MCPREP(RMCWRK)
+
+!      GAMMA = 0D0
+!      GAMMA_E = 0D0
+
+      ISIZE = KK
+
+!    Vread = 0d0
+!    call readfile('init.inp',ubound(ksym,1),ksym,Vread)
+!    X(1:KK) = Vread(1:KK)
+!    X(KK) = max( 1d0 - sum(X(1:KK-1)),SMALL)
+!    call CKXTY(X, ICKWRK, RCKWRK, Y)
+!    Y = Y + SMALL
+!    if(myid == 0) write(*,'(78("!")/,a,1pG12.4,/78("!")/)') 'Rgas=', sum(Y(1:KK)*Rgas_s(1:KK))
+
+!convert to CGS
+!    do I = 0,1
+!       Vread(KK+1 + 4*I) = Vread(KK+1+ 4*I)*Pa2dynesOcmsq
+!       Vread(KK+2 + 4*I) = Vread(KK+2+ 4*I)*m2cm
+!       Vread(KK+3 + 4*I) = Vread(KK+3+ 4*I)*m2cm
+!    end do
+
+
+!    STATE3(1:4) = Vread(KP3:KT3)
+!    STATE4(1:4) = Vread(Kp4:KT4)
+!    STATE3(5:5+KK-1) = Y(1:KK)
+!    STATE4(5:5+KK-1) = Y(1:KK)
+!    call p2c(STATE3,CSTATE3)  
+!    call p2c(STATE4,CSTATE4)  
+
+!    MinTempI = min(STATE3(4),STATE4(4))*0.4d0
+!    MaxTempI = max(STATE3(4),STATE4(4))*2d0
+!    rhomin = min(CSTATE3(1),CSTATE4(1))*0.005d0
+
+!    do k = 1,ubound(spanK,1)
+!       spanK(K) = dble(K)
+!    end do
+!Print variables
+!    Vread = 0d0
+!    call readfile('print.inp',ubound(ksymF,1),ksymF,Vread)
+!    do K = 1,ubound(ksymF,1)
+!       printvar(K) = Vread(k) > 0.5d0
+!   end do
+!
+!Evaluate the element conservation matrix if using a reduced system
+!
+!    call ElementConservation(3,Y)
+
+!this flag prevents this routine to be called again
+      initialized = .true.
+
+      RETURN
+      END
+
+cccccccccccccccc
+      SUBROUTINE get_nspecies(chf_int[spec])
+
+#include "EBREACTIVECommon.fh"
+#include "EBEOSCommon.fh"
+
+      spec = NKK
+
+      return
+      end
+ccccccccccccccccccccc
+      subroutine getsmall(
+     &     chf_real[ausmall],
+     &     chf_real[ausmallp],
+     &     chf_real[ausmallu],
+     &     chf_real[ausmallr])
+
+#include  "EBEOSCommon.fh"
+
+      ausmall = small
+      ausmallp= smallp
+      ausmallu= smallu
+      ausmallr= smallr
+
+      return
+      end
+cccccccccccccccccccc
+      subroutine floorprim(
+     &     chf_box[dcalc],
+     &     chf_fra[state])
+
+      integer chf_ddecl[i; j; k]
+#include "EBEOSCommon.fh"
+
+
+c     enforce floors
+      chf_multido[dcalc;i;j;k]
+
+      state(chf_ix[i;j;k],QRHO) =  max(state(chf_ix[i;j;k],QRHO), smallr)
+      state(chf_ix[i;j;k],QPRES) = max(state(chf_ix[i;j;k],QPRES),smallp)
+
+      chf_enddo
+
+      return
+      end
+ccccccccccccccccccccc
+      subroutine floorcons(
+     &     chf_box[dcalc],
+     &     chf_fra[state])
+
+      integer chf_ddecl[i; j; k]
+#include "EBEOSCommon.fh"
+
+
+c     enforce floors
+      chf_multido[dcalc;i;j;k]
+
+      state(chf_ix[i;j;k],CRHO) = max(state(chf_ix[i;j;k],CRHO), smallr)
+      state(chf_ix[i;j;k],CENG) = max(state(chf_ix[i;j;k],CENG), small)
+
+      chf_enddo
+
+      return
+      end
+ccccccccccccccccccccc
+      subroutine update(
+     &     chf_box[dcalc],
+     &     chf_fra[state],
+     &     chf_const_fra[flux],
+     &     chf_const_int[facedir],
+     &     chf_const_int[nconserved],
+     &     chf_const_real[dtbydx])
+
+      integer chf_ddecl[i; j; k]
+      integer chf_ddecl[ioff; joff; koff]
+
+      integer spacedim,iv
+
+      chf_dterm[
+      ioff = chf_id(0,facedir);
+      joff = chf_id(1,facedir);
+      koff = chf_id(2,facedir)]
+
+      spacedim = CH_SPACEDIM
+
+      do iv = 0,nconserved - 1
+         chf_multido[dcalc;i;j;k]
+
+         state(chf_ix[i;j;k],iv) = state(chf_ix[i;j;k],iv) -
+     &        dtbydx *
+     &        ( flux(chf_ix[i+ioff;j+joff;k+koff],iv)
+     &        - flux(chf_ix[i     ;j     ;k     ],iv))
+         chf_enddo
+      enddo
+
+      return
+      end
+ccccccccccccccccccccc
+      subroutine regupdate(
+     &     chf_box[dcalc],
+     &     chf_fra[consstate],
+     &     chf_const_fra[divf],
+     &     chf_const_int[nconserved],
+     &     chf_const_real[dt])
+
+      integer chf_ddecl[i; j; k]
+      integer iv
+
+      do iv = 0,nconserved - 1
+
+         chf_multido[dcalc;i;j;k]
+
+         consstate(chf_ix[i;j;k],iv) = consstate(chf_ix[i;j;k],iv)
+     &        - dt*divf(chf_ix[i;j;k],iv)
+
+         chf_enddo
+
+      enddo
+
+      return
+      end
+ccccccccccccccccccccc
+      subroutine getgrad(
+     &     chf_fra1[du],
+     &     chf_const_fra1[u],
+     &     chf_const_int[idir],
+     &     chf_box[lobox],
+     &     chf_const_int[haslo],
+     &     chf_box[hibox],
+     &     chf_const_int[hashi],
+     &     chf_box[centerbox])
+
+      integer chf_ddecl[i   ;j   ;k   ]
+      integer chf_ddecl[ioff;joff;koff]
+
+      chf_dterm[
+      ioff = chf_id(0,idir);
+      joff = chf_id(1,idir);
+      koff = chf_id(2,idir)]
+
+c     perform first difference calculation in the interior.
+
+      chf_multido[centerbox;i;j;k]
+
+      du(chf_ix[i;j;k]) = half*
+     &     (  u(chf_ix[i+ioff;j+joff;k+koff])
+     &     -  u(chf_ix[i-ioff;j-joff;k-koff]))
+
+      chf_enddo
+
+c     perform calculation on the cells adjacent to the domain boundary in
+c     current direction, if required.
+
+      if (haslo .eq. 1) then
+         chf_multido[lobox;i;j;k]
+         du(chf_ix[i;j;k]) =
+     &        ( u(chf_ix[i+ioff;j+joff;k+koff])
+     &        - u(chf_ix[i     ;j     ;k     ]))
+         chf_enddo
+      endif
+
+      if (hashi .eq. 1) then
+         chf_multido[hibox;i;j;k]
+         du(chf_ix[i;j;k]) =
+     &        ( u(chf_ix[i     ;j     ;k     ])
+     &        - u(chf_ix[i-ioff;j-joff;k-koff]))
+         chf_enddo
+      endif
+
+      return
+      end
+ccccccccccccccccccccc
+      subroutine getdptwo(
+     &     chf_fra1[delta2p],
+     &     chf_const_fra1[delta1p],
+     &     chf_const_int[idir],
+     &     chf_box[lobox],
+     &     chf_const_int[haslo],
+     &     chf_box[hibox],
+     &     chf_const_int[hashi],
+     &     chf_box[centerbox])
+
+      integer chf_ddecl[i   ;j   ;k   ]
+      integer chf_ddecl[ioff;joff;koff]
+      Real dp1hi, dp1lo
+c     perform centered average to obtain delta2p in the interior.
+
+      chf_dterm[
+      ioff = chf_id(0,idir);
+      joff = chf_id(1,idir);
+      koff = chf_id(2,idir)]
+
+      chf_multido[centerbox;i;j;k]
+
+      dp1hi = delta1p(chf_ix[i+ioff;j+joff;k+koff])
+      dp1lo = delta1p(chf_ix[i-ioff;j-joff;k-koff])
+      delta2p(chf_ix[i;j;k]) = dp1hi + dp1lo
+
+      chf_enddo
+
+c     perform calculation on the cells adjacent to the domain boundary in
+c     current direction, if required.
+
+      if (haslo .eq. 1) then
+         chf_multido[lobox;i;j;k]
+
+         dp1hi = delta1p(chf_ix[i+ioff;j+joff;k+koff])
+         dp1lo = delta1p(chf_ix[i     ;j     ;k     ])
+         delta2p(chf_ix[i;j;k]) = dp1hi + dp1lo
+
+         chf_enddo
+      endif
+
+      if (hashi .eq. 1) then
+         chf_multido[hibox;i;j;k]
+
+         dp1hi =  delta1p(chf_ix[i     ;j     ;k     ])
+         dp1lo =  delta1p(chf_ix[i-ioff;j-joff;k-koff])
+         delta2p(chf_ix[i;j;k]) = dp1hi + dp1lo
+
+         chf_enddo
+      endif
+
+      return
+      end
+ccccccccccccccccccccc
+      subroutine getflat(
+     &     chf_fra1[zetatwiddle],
+     &     chf_const_fra1[delta1p],
+     &     chf_const_fra1[delta2p],
+     &     chf_const_fra1[bulkmin],
+     &     chf_box[box])
+
+      integer chf_ddecl[i;j;k]
+      real_t d,r0,r1,ratio,strength
+      real_t d1pvof, d2pvof, smallp
+
+#ifdef   CH_USE_FLOAT
+      data d  /0.33/
+      data r0 /0.75/
+      data r1 /0.85/
+#endif
+#ifdef   CH_USE_DOUBLE
+#ifdef   CH_CRAY
+      data d  /0.33/
+      data r0 /0.75/
+      data r1 /0.85/
+#else
+      data d  /0.33d0/
+      data r0 /0.75d0/
+      data r1 /0.85d0/
+#endif
+#endif
+      chf_multido[box;i;j;k]
+      strength = abs(delta1p(chf_ix[i;j;k])/bulkmin(chf_ix[i;j;k]))
+c     bad idea among many
+      smallp = 1.0e-7
+
+      if (strength .ge. d) then
+         d1pvof =  abs(delta1p(chf_ix[i;j;k]))
+         d2pvof =  max(abs(delta2p(chf_ix[i;j;k])),smallp)
+         ratio =  d1pvof/d2pvof
+
+         if (ratio .le. r0) then
+            zetatwiddle(chf_ix[i;j;k]) = one
+         else if (ratio .ge. r1) then
+            zetatwiddle(chf_ix[i;j;k]) = zero
+         else
+            zetatwiddle(chf_ix[i;j;k]) = one - (ratio - r0)/(r1 - r0)
+         endif
+      else
+         zetatwiddle(chf_ix[i;j;k]) = one
+      endif
+      chf_enddo
+
+      return
+      end
+
+cccccccccccccccccccc
+      subroutine min3pts(
+     &     chf_fra1[mindata],
+     &     chf_const_fra1[data],
+     &     chf_const_int[idir],
+     &     chf_box[lobox],
+     &     chf_const_int[haslo],
+     &     chf_box[hibox],
+     &     chf_const_int[hashi],
+     &     chf_box[centerbox])
+
+      integer chf_ddecl[i   ;j   ;k   ]
+      integer chf_ddecl[ioff;joff;koff]
+
+      chf_dterm[
+      ioff = chf_id(0,idir);
+      joff = chf_id(1,idir);
+      koff = chf_id(2,idir)]
+
+c     perform 3 point minimum calculation in the interior.
+
+      chf_multido[centerbox;i;j;k]
+      mindata(chf_ix[i;j;k]) = min(
+     &     data(chf_ix[i     ;j     ;k     ]),
+     &     data(chf_ix[i+ioff;j+joff;k+koff]),
+     &     data(chf_ix[i-ioff;j-joff;k-koff]))
+      chf_enddo
+
+c     perform calculation on the cells adjacent to the domain boundary in
+c     current direction, if required.
+
+      if (haslo .ne. 0) then
+         chf_multido[lobox;i;j;k]
+         mindata(chf_ix[i;j;k]) = min(
+     &        data(chf_ix[i     ;j     ;k     ]),
+     &        data(chf_ix[i+ioff;j+joff;k+koff]))
+         chf_enddo
+      endif
+
+      if (hashi .ne. 0) then
+         chf_multido[hibox;i;j;k]
+         mindata(chf_ix[i;j;k]) = min(
+     &        data(chf_ix[i     ;j     ;k     ]),
+     &        data(chf_ix[i-ioff;j-joff;k-koff]))
+         chf_enddo
+      endif
+
+      return
+      end
+ccccccccccc
+      subroutine minflat(
+     &     chf_fra1[flattening],
+     &     chf_const_fra[zetadir],
+     &     chf_const_fra[du],
+     &     chf_box[box])
+
+      integer chf_ddecl[i;j;k]
+      integer iv
+      real_t  sumdu,minflattot,minzetadir
+
+      chf_multido[box;i;j;k]
+      sumdu = zero
+      do iv = 0,chf_ncomp[du] - 1
+         sumdu = sumdu + du(chf_ix[i;j;k],iv)
+      enddo
+      if (sumdu .lt. zero) then
+         minflattot = zetadir(chf_ix[i;j;k],0)
+
+         do iv = 1,chf_ncomp[du] - 1
+            minzetadir = zetadir(chf_ix[i;j;k],iv)
+            minflattot = min(minflattot,minzetadir)
+         enddo
+
+         flattening(chf_ix[i;j;k]) = minflattot
+      else
+         flattening(chf_ix[i;j;k]) = one
+      endif
+      chf_enddo
+
+      return
+      end
+cccccccccccccccccccc
+        subroutine divuoned(
+     &    chf_fra1[divu],
+     &    chf_const_fra1[velnorm],
+     &    chf_const_int[facedir],
+     &    chf_box[centerbox])
+
+      integer chf_ddecl[i;j;k],chf_ddecl[ioff;joff;koff]
+
+      chf_dterm[
+      ioff = chf_id(0,facedir);
+      joff = chf_id(1,facedir);
+      koff = chf_id(2,facedir)]
+
+      chf_multido[centerbox;i;j;k]
+
+      divu(chf_ix[i;j;k]) =
+     &     velnorm(chf_ix[i       ;j       ;k       ]) -
+     &     velnorm(chf_ix[i - ioff;j - joff;k - koff])
+
+      chf_enddo
+
+      return
+      end
+cccccccccccccccc
+        subroutine divutran(
+     &    chf_fra1[divu],
+     &    chf_const_fra1[slopevel],
+     &    chf_const_int[facedir],
+     &    chf_box[centerbox])
+
+      integer chf_ddecl[i;j;k],chf_ddecl[ioff;joff;koff]
+
+      chf_dterm[
+      ioff = chf_id(0,facedir);
+      joff = chf_id(1,facedir);
+      koff = chf_id(2,facedir)]
+
+      chf_multido[centerbox;i;j;k]
+
+      divu(chf_ix[i;j;k]) = divu(chf_ix[i;j;k])+ half*(
+     &     slopevel(chf_ix[i     ;j     ;k     ]) +
+     &     slopevel(chf_ix[i-ioff;j-joff;k-koff]))
+
+      chf_enddo
+
+      return
+      end
+cccccccccccccccc
+        subroutine divuedge(
+     &    chf_fra1[divu],
+     &    chf_const_int[facedir],
+     &    chf_box[lobox],
+     &    chf_const_int[haslo],
+     &    chf_box[hibox],
+     &    chf_const_int[hashi])
+
+      integer chf_ddecl[i;j;k],chf_ddecl[ioff;joff;koff]
+
+      chf_dterm[
+      ioff = chf_id(0,facedir);
+      joff = chf_id(1,facedir);
+      koff = chf_id(2,facedir)]
+
+      if (haslo .eq. 1) then
+         chf_multido[lobox;i;j;k]
+         divu(chf_ix[i;j;k]) = divu(chf_ix[i+ioff;j+joff;k+koff])
+         chf_enddo
+      endif
+
+      if (hashi .eq. 1) then
+         chf_multido[hibox;i;j;k]
+         divu(chf_ix[i;j;k]) = divu(chf_ix[i-ioff;j-joff;k-koff])
+         chf_enddo
+      endif
+
+      return
+      end
+cccccccccccccccccccc
+        subroutine artvisc(
+     &     chf_fra[f],
+     &     chf_const_fra[u],
+     &     chf_const_fra1[divu],
+     &     chf_const_real[coeff],
+     &     chf_const_int[idir],
+     &     chf_box[box],
+     &     chf_const_int[numcons],
+     &     chf_const_real[dx])
+
+        integer chf_ddecl[i   ; j   ; k   ]
+        integer chf_ddecl[ioff; joff; koff]
+        integer iv
+
+        real_t fc,dv,s1,s2
+
+        chf_dterm[
+        ioff = chf_id(0,idir);
+        joff = chf_id(1,idir);
+        koff = chf_id(2,idir)]
+
+        do iv = 0,numcons - 1
+          chf_multido[box;i;j;k]
+            fc = f   (chf_ix[i     ;j     ;k     ],iv)
+            dv = divu(chf_ix[i     ;j     ;k     ])
+            s1 = u   (chf_ix[i     ;j     ;k     ],iv)
+            s2 = u   (chf_ix[i-ioff;j-joff;k-koff],iv)
+
+            f(chf_ix[i;j;k],iv) = fc - coeff*max(-dv, 0.d0)*(s1-s2)
+          chf_enddo
+        enddo
+
+        return
+        end
+cccccccccccccccccccc
+      subroutine divergef(
+     &     chf_box[dcalc],
+     &     chf_fra[divf],
+     &     chf_const_fra[flux],
+     &     chf_const_int[facedir],
+     &     chf_const_int[nconserved],
+     &     chf_const_real[dx])
+
+      integer chf_ddecl[i; j; k]
+      integer chf_ddecl[ioff; joff; koff]
+      integer spacedim,iv
+
+      chf_dterm[
+      ioff = chf_id(0,facedir);
+      joff = chf_id(1,facedir);
+      koff = chf_id(2,facedir)]
+
+      spacedim = CH_SPACEDIM
+
+      do iv = 0,nconserved - 1
+
+         chf_multido[dcalc;i;j;k]
+
+         divf(chf_ix[i;j;k],iv) = divf(chf_ix[i;j;k],iv) +
+     &        (flux(chf_ix[i+ioff;j+joff;k+koff],iv)
+     &        -flux(chf_ix[i     ;j     ;k     ],iv))/dx
+
+         chf_enddo
+
+      enddo
+
+      return
+      end
+
+ccccccccccccccccccccc
+      subroutine getsoundspeed(
+     &    chf_const_real[intenrg],
+     &    chf_const_vr[massfrac],
+     &    chf_real[soundspeed])
+
+      integer ivar, sss
+      real_t Temp, Tguess1, Tguess2, Cp, Cv, gamma
+      real_t Rgas, enrgCGS
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+
+      do ivar = 0,NKK-1
+        Y(ivar+1) = massfrac(ivar)
+      enddo
+
+      Tguess1 = 0d0
+      Tguess2 = 5000d0
+      sss = 1
+      enrgCGS = intenrg*10000d0
+      call brent_method(Temp,Tguess1,Tguess2,enrgCGS,sss)
+
+      if (sss == 0) then
+        print*, 'brent method failed in getsoundspeed'
+        print*,'internal',intenrg
+      endif
+
+      call CKCVCoeff(Temp,ICKWRK,RCKWRK,Cvs,IPolyOrder)
+      call CKCVCoeffAvg(Y,Cvs,a_298,b_298)
+
+      Cv = a_298(1)
+      do ivar = 2,IpolyOrder
+        Cv = Cv+a_298(ivar)*Temp**(ivar-1)
+      enddo
+      call CKRgas(Y,ICKWRK,RCKWRK,Rgas)
+      Cp = Cv+Rgas
+      gamma = Cp/Cv
+      
+      if (Cv ==0) then
+        gamma = 1.2
+      endif 
+      
+      soundspeed = sqrt(gamma*Rgas*Temp)
+      soundspeed = soundspeed*0.01
+
+      return
+      end
+ccccccccccccccccccccc
+      subroutine getsoundspeedtemp(
+     &    chf_const_real[temp],
+     &    chf_const_vr[massfrac],
+     &    chf_real[soundspeed])
+
+      integer ivar
+      real_t Rgas,Cp, Cv, gamma
+
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+
+      do ivar = 0,NKK-1
+        Y(ivar+1) = massfrac(ivar)
+      enddo
+
+      call CKCVCoeff(Temp,ICKWRK,RCKWRK,Cvs,IPolyOrder)
+      call CKCVCoeffAvg(Y,Cvs,a_298,b_298)
+
+      Cv = a_298(1) 
+      do ivar = 2,IpolyOrder
+        Cv = Cv+a_298(ivar)*Temp**(ivar-1)
+      enddo
+      call CKRgas(Y,ICKWRK,RCKWRK,Rgas)
+      Cp = Cv+Rgas 
+      gamma = Cp/Cv 
+      
+      if (Cv == 0) then
+        gamma = 1.2
+      endif 
+
+      soundspeed = sqrt(gamma*Rgas*Temp)
+      soundspeed = soundspeed*0.01
+
+      return
+      end
+
+cccccccccccccccc
+      subroutine cons2prm(
+     &     chf_box[dcalc],
+     &     chf_const_fra[u],
+     &     chf_fra[q],
+     &     chf_const_int[logflag],
+     &     chf_const_int[iverbose]
+     &     )
+
+      integer chf_ddecl[i; j; k]
+      integer idir, ivar
+      real_t dense, internal, kinetic, temp, press, vel
+      real_t Tguess1, Tguess2, soundspeed, internCGS, denseCGS
+      real_t pressCGS, entropy
+      real_t Cv, Cp, gamma, Rgas
+      integer sss
+
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+
+      chf_multido[dcalc;i;j;k]
+
+
+      dense = 0d0
+      do ivar = 0,NKK-1
+       dense = dense + u(chf_ix[i;j;k], CSPEC1+ivar)
+      enddo
+      dense = max(dense,smallr)
+c     density
+      q(chf_ix[i;j;k], QRHO) = dense
+
+      kinetic = zero
+      do idir = 0, CH_SPACEDIM-1
+c     velocity
+         vel = u(chf_ix[i;j;k], CMOMX+idir)/dense
+         q(chf_ix[i;j;k], QVELX+idir) = vel
+c         print*,'vel in cons2prm',vel
+         kinetic = kinetic + half*vel*vel
+      enddo
+
+      internal = u(chf_ix[i;j;k], CENG)
+
+      internal = internal /dense
+      internal = internal - kinetic
+c     convert to CGS
+      internCGS = internal*10000d0 
+
+c     mass fractions
+      do ivar = 0,NKK-1
+        Y(ivar+1) = (u(chf_ix[i;j;k], CSPEC1+ivar))/dense
+        q(chf_ix[i;j;k], QSPEC1+ivar) = Y(ivar+1)
+      enddo
+ 
+      Tguess1 = 0d0
+      Tguess2 = 5000d0
+      sss = 1
+ 
+      call brent_method(Temp,Tguess1,Tguess2,internCGS,sss)
+
+      if (sss == 0) then
+        print*,'brent method failed in cons2prm'
+        print'(2i3,"here",1p123e12.4)', i,j, u(chf_ix[i;j;k], CRHO:CSPEC1+7) 
+        !!print*,'dense', dense
+        !!print*,'internal',u(chf_ix[i;j;k], CENG)
+        !!print*,'i',i
+        !!print*,'j',j
+      endif
+
+      call CKCVCoeff(Temp,ICKWRK,RCKWRK,Cvs,IPolyOrder)
+      call CKCVCoeffAvg(Y,Cvs,a_298,b_298)
+
+      Cv = a_298(1)
+      do ivar = 2,IpolyOrder
+        Cv = Cv+a_298(ivar)*Temp**(ivar-1)
+      enddo
+      
+      if (Cv .le. 0) then
+       print*,'Cv unphysical in cons2prm for Temperature',Temp
+       print*,'Cv',Cv,i,j
+      endif
+      
+      call CKRgas(Y,ICKWRK,RCKWRK,Rgas)
+      Cp = Cv+Rgas
+      gamma = Cp/Cv
+
+c      if (Cv == 0) then
+c        gamma = 1.2
+c      endif
+
+      soundspeed = sqrt(gamma*Rgas*Temp)
+c     convert to SI units
+      soundspeed = soundspeed*0.01
+
+      denseCGS = dense*0.001
+      call CKPY(denseCGS,temp,Y,ICKWRK,RCKWRK,pressCGS)
+      press = pressCGS*0.1  
+
+      if (logflag .eq. 1) then 
+        dense = log10(dense) 
+        press = log10(press) 
+      endif 
+ 
+      entropy = log10(press) - gamma*log10(dense)
+
+c     pressure
+      q(chf_ix[i;j;k], QPRES) = press
+c     entropy set to 0 when not in output mode
+      q(chf_ix[i;j;k], QENTR) = entropy
+c     temperature
+      q(chf_ix[i;j;k], QTEMP) = temp
+c     soundspeed
+      q(chf_ix[i;j;k], QC) = soundspeed
+
+      chf_enddo
+
+      return
+      end
+cccccccccccccccc
+      subroutine pointcons2prm(
+     &     chf_vr[conserved],
+     &     chf_vr[primitive],
+     &     chf_int[success],
+     &     chf_const_int[logflag])
+
+     
+      integer idir, ivar, sss
+      real_t dense, internal, kinetic, temp, press, vel
+      real_t Tguess1, Tguess2, soundspeed, internCGS, denseCGS
+      real_t pressCGS, entropy
+      real_t Cp, Cv, gamma, Rgas
+
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+
+      dense = 0d0
+      do ivar = 0,NKK-1
+       dense = dense + conserved(CSPEC1+ivar)
+      enddo
+      dense = max(dense,smallr)
+c     density
+      primitive(QRHO) = dense
+
+      kinetic = zero
+      do idir = 0, CH_SPACEDIM-1
+c     velocity
+         vel = conserved(CMOMX+idir)/dense
+         primitive(QVELX+idir) = vel
+         kinetic = kinetic + half*vel*vel
+      enddo
+
+      internal = conserved(CENG)-kinetic*dense
+      internal = internal/dense
+c     convert to CGS
+      internCGS = internal*10000d0
+
+c     mass fractions
+      do ivar = 0,NKK-1
+        Y(ivar+1) = (conserved(CSPEC1+ivar))/dense
+        primitive(QSPEC1+ivar) = Y(ivar+1)
+      enddo
+
+      Tguess1 = 0d0
+      Tguess2 = 5000d0
+      sss = 1
+ 
+      call brent_method(Temp,Tguess1,Tguess2,internCGS,sss)
+
+       if (sss == 0) then
+         print*,'brent method failed in pointcons2prm'
+         print*,'dense is', dense
+         print*,'energy is',conserved(CENG)
+         print*,'kinetic is',kinetic
+         success = 0
+       endif
+
+      call CKCVCoeff(Temp,ICKWRK,RCKWRK,Cvs,IPolyOrder)
+      call CKCVCoeffAvg(Y,Cvs,a_298,b_298)
+
+      Cv = a_298(1)
+      do ivar = 2,IpolyOrder
+        Cv = Cv+a_298(ivar)*Temp**(ivar-1)
+      enddo
+      
+      if (Cv .le. 0) then
+        print*,'Cv unphysical in pointcons2prm'
+        print*,'for Temperature',Temp
+      endif 
+
+      call CKRgas(Y,ICKWRK,RCKWRK,Rgas)
+      Cp = Cv+Rgas
+      gamma = Cp/Cv
+
+      if (Cv ==0) then
+        gamma = 1.2
+      endif
+
+      soundspeed = sqrt(gamma*Rgas*Temp)
+c     convert to SI units
+      soundspeed = soundspeed*0.01
+
+      denseCGS = dense*0.001
+      call CKPY(denseCGS,temp,Y,ICKWRK,RCKWRK,pressCGS)
+      press = pressCGS*0.1
+
+      if (logflag .eq. 1) then
+        dense = log10(dense)
+        press = log10(press) 
+      endif
+
+      entropy = log10(press) - gamma*log10(dense) 
+
+
+c     pressure
+      primitive(QPRES) = press
+c     entropy set to 0 when not in output mode
+      primitive(QENTR) = entropy
+c     temperature
+      primitive(QTEMP) = temp
+c     soundspeed
+      primitive(QC) = soundspeed
+
+      return
+      end
+cccccccccccccccc
+      subroutine secondslopediffs(
+     &     chf_fra[deltawc],
+     &     chf_fra[deltawl],
+     &     chf_fra[deltawr],
+     &     chf_const_fra[w],
+     &     chf_const_int[numslopes],
+     &     chf_const_int[idir],
+     &     chf_box[lobox],
+     &     chf_const_int[haslo],
+     &     chf_box[hibox],
+     &     chf_const_int[hashi],
+     &     chf_box[centerbox])
+
+      integer chf_ddecl[i   ;j   ;k   ],lvar
+      integer chf_ddecl[ioff;joff;koff]
+      real_t dwr,dwl
+
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+
+c     perform first difference calculation in the interior.
+      chf_dterm[
+      ioff = chf_id(0,idir);
+      joff = chf_id(1,idir);
+      koff = chf_id(2,idir)]
+
+      do lvar = 0, numslopes - 1
+         chf_multido[centerbox;i;j;k]
+         dwr =  w(chf_ix[i+ioff;j+joff;k+koff],lvar)
+     &        - w(chf_ix[i     ;j     ;k     ],lvar)
+         dwl =  w(chf_ix[i     ;j     ;k     ],lvar)
+     &        - w(chf_ix[i-ioff;j-joff;k-koff],lvar)
+
+         deltawr(chf_ix[i;j;k],lvar) = dwr
+         deltawl(chf_ix[i;j;k],lvar) = dwl
+         deltawc(chf_ix[i;j;k],lvar) = half*(dwr + dwl)
+         chf_enddo
+
+c     perform calculation on the cells adjacent to the domain boundary in
+c     current direction, if required.
+
+         if (haslo .ne. 0) then
+            chf_multido[lobox;i;j;k]
+            dwr =  w(chf_ix[i+ioff;j+joff;k+koff],lvar)
+     &           - w(chf_ix[i     ;j     ;k     ],lvar)
+            deltawc(chf_ix[i;j;k],lvar) = dwr
+            deltawl(chf_ix[i;j;k],lvar) = dwr
+            deltawr(chf_ix[i;j;k],lvar) = dwr
+            chf_enddo
+         endif
+
+         if (hashi .ne. 0) then
+            chf_multido[hibox;i;j;k]
+            dwl =  w(chf_ix[i     ;j     ;k     ],lvar)
+     &           - w(chf_ix[i-ioff;j-joff;k-koff],lvar)
+            deltawc(chf_ix[i;j;k],lvar) = dwl
+            deltawl(chf_ix[i;j;k],lvar) = dwl
+            deltawr(chf_ix[i;j;k],lvar) = dwl
+            chf_enddo
+         endif
+      enddo
+
+      return
+      end
+cccccccccccccccc
+      subroutine vllimiter(
+     &     chf_fra[slopeprim],
+     &     chf_const_fra[slopeleft],
+     &     chf_const_fra[sloperigh],
+     &     chf_box[dcalc])
+
+      integer chf_ddecl[i;j;k], iv
+      real_t dql, dqr, dqlim
+
+      do iv = 0,chf_ncomp[slopeprim] - 1
+         chf_multido[dcalc;i;j;k]
+
+         dql   = slopeleft(chf_ix[i;j;k], iv)
+         dqr   = sloperigh(chf_ix[i;j;k], iv)
+c centered diff comes in this way for second order
+         dqlim = slopeprim(chf_ix[i;j;k], iv)
+
+         call pointvllimiter(dqlim, dql, dqr)
+
+         slopeprim(chf_ix[i;j;k],iv) = dqlim
+
+         chf_enddo
+      enddo
+
+      return
+      end
+cccccccccccccccc
+      subroutine pointvllimiter(
+     &     chf_real[dqlim],
+     &     chf_const_real[dql],
+     &     chf_const_real[dqr])
+
+      real_t dqc
+
+      dqc = dqlim
+      dqlim = min(two*abs(dql),two*abs(dqr))
+      dqlim = min(dqlim, abs(dqc))
+      if (dql*dqr .lt. zero)  then
+         dqlim = zero
+      else
+         dqlim = dqlim*sign(one, dql)
+      endif
+
+      return
+      end
+cccccccccccccccc
+      subroutine forthslopediffs(
+     &     chf_fra[delta4wc],
+     &     chf_const_fra[w],
+     &     chf_const_fra[delta2w],
+     &     chf_const_int[numslopes],
+     &     chf_const_int[idir],
+     &     chf_box[lobox],
+     &     chf_const_int[haslo],
+     &     chf_box[hibox],
+     &     chf_const_int[hashi],
+     &     chf_box[centerbox])
+
+      integer chf_ddecl[i   ;j   ;k   ],lvar
+      integer chf_ddecl[ioff;joff;koff]
+      real_t dwr,dwl, vall, slol, valr, slor
+
+c     perform first difference calculation in the interior.
+      chf_dterm[
+      ioff = chf_id(0,idir);
+      joff = chf_id(1,idir);
+      koff = chf_id(2,idir)]
+
+      do lvar = 0, numslopes - 1
+         chf_multido[centerbox;i;j;k]
+
+         valr =       w(chf_ix[i+ioff;j+joff;k+koff],lvar)
+         slor = delta2w(chf_ix[i+ioff;j+joff;k+koff],lvar)
+
+         vall =       w(chf_ix[i-ioff;j-joff;k-koff],lvar)
+         slol = delta2w(chf_ix[i-ioff;j-joff;k-koff],lvar)
+
+         dwl = vall + fourth*slol
+         dwr = valr - fourth*slor
+
+         delta4wc(chf_ix[i;j;k],lvar) = two3rd*(dwr - dwl)
+
+         chf_enddo
+
+c     perform calculation on the cells adjacent to the domain boundary in
+c     current direction, if required.
+
+         if (haslo .ne. 0) then
+            chf_multido[lobox;i;j;k]
+            delta4wc(chf_ix[i;j;k],lvar) = delta2w(chf_ix[i;j;k],lvar)
+            chf_enddo
+         endif
+
+         if (hashi .ne. 0) then
+            chf_multido[hibox;i;j;k]
+            delta4wc(chf_ix[i;j;k],lvar) = delta2w(chf_ix[i;j;k],lvar)
+            chf_enddo
+         endif
+      enddo
+
+      return
+      end
+cccccccccccccccccccc
+      subroutine applyflat(
+     &     chf_fra[dw],
+     &     chf_const_fra1[flattening],
+     &     chf_const_int[numslopes],
+     &     chf_box[box])
+
+      integer chf_ddecl[i;j;k],lvar
+
+c     apply the flattening coefficient
+      do lvar = 0, numslopes - 1
+         chf_multido[box;i;j;k]
+         dw(chf_ix[i;j;k],lvar) = flattening(chf_ix[i;j;k])
+     &        * dw(chf_ix[i;j;k],lvar)
+         chf_enddo
+      enddo
+
+      return
+      end
+cccccccccccccccc
+      subroutine setsourcerz(
+     &     chf_fra[sourcerz],
+     &     chf_const_fra[state],
+     &     chf_const_real[dr],
+     &     chf_box[dcalc])
+
+      integer chf_ddecl[i;j;k], iv, idir
+      real_t  momen(0:CH_SPACEDIM-1)
+      real_t radius, dense, energ,
+     &     densesource, presssource
+
+      chf_multido[dcalc;i;j;k]
+
+c     only dense and energ have source terms.
+c     set the others to zero
+
+      do iv = 0,chf_ncomp[sourcerz] - 1
+         sourcerz(chf_ix[i;j;k], iv) = zero
+      enddo
+
+      dense  = state(chf_ix[i;j;k],CRHO)
+      energ   = state(chf_ix[i;j;k],CENG)
+      do idir = 0, CH_SPACEDIM-1
+         momen(idir) = state(chf_ix[i;j;k],CMOMX+idir)
+      enddo
+
+      radius = (i + 0.5)*dr
+      call pointsetsourcerz(densesource, presssource,
+     &     dense, momen, energ, radius)
+
+      sourcerz(chf_ix[i;j;k], QRHO)  = densesource
+      sourcerz(chf_ix[i;j;k], QPRES) = presssource
+
+      chf_enddo
+
+      return
+      end
+cccccccccccccccc
+      subroutine pointsetsourcerz(
+     &     chf_real[densesource],
+     &     chf_real[presssource],
+     &     chf_const_real[dense],
+     &     chf_const_realvect[momen],
+     &     chf_const_real[energ],
+     &     chf_const_real[radius]
+     &     )
+
+#include "EBEOSCommon.fh"
+      real_t vel(0:CH_SPACEDIM-1), press, sound, urad
+      real_t modianovel(0:CH_SPACEDIM-1), entropy, internal, cvtemp
+      integer logflag, cnum, qnum, idir
+      real_t conserved(0:CNUM-1)
+      real_t primitive(0:QNUM-1)
+
+      cnum = CNUM-1
+      qnum = QNUM-1
+      logflag = 0
+      if(radius .le. zero) then
+       call MAYDAY_ERROR()
+      endif
+
+      dense = max(dense, smallr)
+c      call fillconservedvector(conserved, cnum, dense, momen, energ)
+
+      conserved(CRHO) = dense
+      do idir = 0, CH_SPACEDIM-1
+         conserved(CMOMX+idir)= momen(idir)
+      enddo
+      conserved(CENG) = energ
+
+c     point cons2prm has a pressure floor
+      call pointcons2prm(conserved, cnum, primitive, qnum, 0,logflag)
+
+c      call dumpprimitivevector(primitive, qnum, dense, press, vel,
+c     &     modianovel, entropy, internal, cvtemp, sound)
+
+      do idir = 0, CH_SPACEDIM-1
+         vel(idir) = primitive(QVELX+idir)
+#ifdef MODIANO_PROBLEM
+         modianovel(idir) = primitive(QMVAX+idir)
+#else
+         modianovel(idir) = zero
+#endif
+      enddo
+
+      dense       = primitive(QRHO)
+      entropy     = primitive(QENTR)
+      sound       = primitive(QC)
+      press       = primitive(QPRES)      
+
+      urad = vel(0)
+      densesource =             -dense*urad/radius
+      presssource = -sound*sound*dense*urad/radius
+      return
+      end
+ccccccccccccccccccccc
+      subroutine pred(
+     &     chf_box[dcalc],
+     &     chf_const_fra[q],
+     &     chf_const_fra[dq],
+     &     chf_fra[qlo],
+     &     chf_fra[qhi],
+     &     chf_const_int[normdir],
+     &     chf_const_real[dtbydx],
+     &     chf_const_int[useflat])
+
+      integer chf_ddecl[i;j;k], ivar
+      integer chf_ddecl[inorm; itan1; itan2], spacedim
+      real_t pre, rho, c, upc, umc, denslope, preslope, temp
+      real_t alphap, alpham, alpha0r, alpha0v1, alpha0v2
+      real_t betam, betap, beta0, prelo, prehi, denlo, denhi
+      real_t    vello(0:CH_SPACEDIM-1)
+      real_t    velhi(0:CH_SPACEDIM-1)
+      real_t      vel(0:CH_SPACEDIM-1)
+      real_t chf_ddecl[dun; dut1; dut2]
+      real_t Cp, Cv, gamma, Rgas, templo, temphi, soundspeed
+
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+
+      spacedim = CH_SPACEDIM
+      chf_dterm[
+      inorm = normdir;
+      itan1 = mod(normdir + 1,spacedim);
+      itan2 = mod(normdir + 2,spacedim)]
+
+      chf_multido[dcalc;i;j;k]
+
+c     take stuff out of holders
+      rho = max(smallr, q(chf_ix[i;j;k], QRHO) )
+      pre = max(smallp, q(chf_ix[i;j;k], QPRES))
+      temp = max(small, q(chf_ix[i;j;k], QTEMP))
+      soundspeed = q(chf_ix[i;j;k], QC)
+
+      chf_dterm[
+      vel(inorm) = q(chf_ix[i;j;k],QVELX+inorm);
+      vel(itan1) = q(chf_ix[i;j;k],QVELX+itan1);
+      vel(itan2) = q(chf_ix[i;j;k],QVELX+itan2)]
+
+      do  ivar = 0,NKK-1
+        Y(ivar+1) = q(chf_ix[i;j;k], QSPEC1+ivar)
+      enddo
+
+      denslope = dq(chf_ix[i;j;k], QRHO)
+      preslope = dq(chf_ix[i;j;k], QPRES)
+      chf_dterm[
+      dun  = dq(chf_ix[i;j;k],QVELX+inorm);
+      dut1 = dq(chf_ix[i;j;k],QVELX+itan1);
+      dut2 = dq(chf_ix[i;j;k],QVELX+itan2)]
+
+c     compute wave speeds and eigen guano
+      call CKCVCoeff(temp,ICKWRK,RCKWRK,Cvs,IPolyOrder)
+      call CKCVCoeffAvg(Y,Cvs,a_298,b_298)
+
+      Cv = a_298(1)
+      do ivar = 2,IpolyOrder
+        Cv = Cv+a_298(ivar)*temp**(ivar-1)
+      enddo
+      call CKRgas(Y,ICKWRK,RCKWRK,Rgas)
+      Cp = Cv+Rgas
+      gamma = Cp/Cv
+
+      if (Cv == 0) then
+        gamma = 1.2
+      endif
+
+      c = sqrt(gamma*Rgas*temp)
+      c = c*0.01
+
+      upc = vel(inorm) + c
+      umc = vel(inorm) - c
+
+      alphap = half*( rho*dun/c + preslope/c**2)
+      alpham = half*(-rho*dun/c + preslope/c**2)
+
+      chf_dterm[
+      alpha0r  = denslope - preslope/c**2;
+      alpha0v1 = dut1;
+      alpha0v2 = dut2]
+
+c     extrapolate to the low side.
+
+      betam = -half*(one + min(umc,zero)*dtbydx)
+      beta0 = -half*       c            *dtbydx
+
+      if (vel(inorm).ge.zero) beta0 = zero
+
+      betap = -c*dtbydx
+      if (upc.ge.zero) betap = zero
+
+      denlo = alpha0r*beta0 + alphap*betap + rho + betam*denslope
+
+      chf_dterm[
+      vello(inorm) = alphap*betap*c/rho + vel(inorm) + betam*dun;
+      vello(itan1) = alpha0v1*beta0     + vel(itan1) + betam*dut1;
+      vello(itan2) = alpha0v2*beta0     + vel(itan2) + betam*dut2]
+
+      prelo = alphap*betap*c**2  + pre + betam*preslope
+
+c     extrapolate to the high side.
+
+      betap = half*(one - max(upc,zero)*dtbydx)
+      beta0 = half*c*dtbydx
+
+      if (vel(inorm).le.zero) beta0 = zero
+
+      betam = c*dtbydx
+      if (umc.le.zero) betam = zero
+
+      denhi= alpha0r*beta0 + alpham*betam + rho + betap*denslope
+
+      chf_dterm[
+      velhi(inorm)= -alpham*betam*c/rho + vel(inorm) + betap*dun;
+      velhi(itan1)= alpha0v1*beta0      + vel(itan1) + betap*dut1;
+      velhi(itan2)= alpha0v2*beta0      + vel(itan2) + betap*dut2]
+
+      prehi = alpham*betam*c**2 + pre + betap*preslope
+
+c     floors
+      prehi = max(prehi, smallp)
+      prelo = max(prelo, smallp)
+      denhi = max(denhi, smallr)
+      denlo = max(denlo, smallr)
+
+c     wacky flattening analog
+      if(useflat .eq. 1) then
+         call pointlimit(
+     $        rho, denlo,    denhi,
+     $        vel, vello,    velhi,
+     $        pre, prelo,    prehi)
+      endif
+
+c     put stuff back into holders
+      qlo(chf_ix[i;j;k], QRHO) = denlo
+      qhi(chf_ix[i;j;k], QRHO) = denhi
+
+      qlo(chf_ix[i;j;k], QPRES)= prelo
+      qhi(chf_ix[i;j;k], QPRES)= prehi
+
+      chf_dterm[
+      qlo(chf_ix[i;j;k],QVELX+inorm)= vello(inorm);
+      qlo(chf_ix[i;j;k],QVELX+itan1)= vello(itan1);
+      qlo(chf_ix[i;j;k],QVELX+itan2)= vello(itan2)]
+
+      chf_dterm[
+      qhi(chf_ix[i;j;k],QVELX+inorm)= velhi(inorm);
+      qhi(chf_ix[i;j;k],QVELX+itan1)= velhi(itan1);
+      qhi(chf_ix[i;j;k],QVELX+itan2)= velhi(itan2)]
+
+c intuitively, the mass fractions shouldnt change even for higher order slopes
+c but unfortunately, intuition doesnt always work... so need to calculate eiguano 
+c leave mass fracs as it is for now
+      do ivar = 0,NKK-1
+        qlo(chf_ix[i;j;k],QSPEC1+ivar) = q(chf_ix[i;j;k],QSPEC1+ivar)
+        qhi(chf_ix[i;j;k],QSPEC1+ivar) = q(chf_ix[i;j;k],QSPEC1+ivar)
+      enddo
+
+      do  ivar = 0,NKK-1
+        Y(ivar+1) = qlo(chf_ix[i;j;k], QSPEC1+ivar)
+      enddo
+      call CKRgas(Y,ICKWRK,RCKWRK,Rgas)
+      Rgas = Rgas*0.0001
+      templo = prelo/(Rgas*denlo)
+
+      do  ivar = 0,NKK-1
+        Y(ivar+1) = qhi(chf_ix[i;j;k], QSPEC1+ivar)
+      enddo
+      call CKRgas(Y,ICKWRK,RCKWRK,Rgas)
+      Rgas = Rgas*0.0001
+      temphi = prehi/(Rgas*denhi)
+
+      qlo(chf_ix[i;j;k], QTEMP) = templo
+      qhi(chf_ix[i;j;k], QTEMP) = temphi
+
+      qlo(chf_ix[i;j;k], QC) = soundspeed
+      qhi(chf_ix[i;j;k], QC) = soundspeed
+
+      chf_enddo
+
+      return
+      end
+cccccccccccccccc
+      subroutine pointlimit(
+     &     chf_real    [dense],
+     &     chf_real    [denlo],
+     &     chf_real    [denhi],
+     &     chf_realvect[veloc],
+     &     chf_realvect[vello],
+     &     chf_realvect[velhi],
+     &     chf_real    [press],
+     &     chf_real    [prelo],
+     &     chf_real    [prehi])
+
+      integer idir
+      real_t factor
+
+      factor = half
+
+      if((denlo.lt.(factor*dense)).or.(prelo.lt.(factor*press))) then
+         denlo = dense
+         prelo = press
+         do idir = 0, CH_SPACEDIM-1
+            vello(idir) = veloc(idir)
+         enddo
+      endif
+
+      if((denhi.lt.(factor*dense)).or.(prehi.lt.(factor*press))) then
+         denhi = dense
+         prehi = press
+         do idir = 0, CH_SPACEDIM-1
+            velhi(idir) = veloc(idir)
+         enddo
+      endif
+
+      return
+      end
+cccccccccccccccc
+      subroutine pointpred(
+     $     chf_vr[primit],
+     $     chf_vr[pslope],
+     $     chf_vr[primlo],
+     $     chf_vr[primhi],
+     &     chf_const_int[normdir],
+     &     chf_const_real[dtbydx],
+     &     chf_const_int[useflat])
+
+      integer chf_ddecl[inorm; itan1; itan2]
+      real_t pre, rho, temp, c, upc, umc
+      real_t alphap, alpham
+      real_t chf_ddecl[alpha0r; alpha0v1; alpha0v2]
+      real_t betam, beta0, betap
+      integer spacedim, qnum, ivar
+      real_t chf_ddecl[un;ut1;ut2]
+      real_t chf_ddecl[dun;dut1;dut2]
+      real_t    vel(0:CH_SPACEDIM-1)
+      real_t    vello(0:CH_SPACEDIM-1)
+      real_t    velhi(0:CH_SPACEDIM-1)
+      real_t velslope(0:CH_SPACEDIM-1)
+      real_t modianovel(0:CH_SPACEDIM-1), entropy, internal, cvtemp, sound
+      real_t press, prelo, prehi, preslope
+      real_t dense, denlo, denhi, denslope
+      real_t temphi, templo, Cp, Cv, gamma, Rgas, soundspeed
+
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+
+      spacedim = CH_SPACEDIM
+      chf_dterm[
+      inorm = normdir;
+      itan1 = mod(normdir + 1,spacedim);
+      itan2 = mod(normdir + 2,spacedim)]
+
+c     take stuff out of holders
+      rho = max(smallr, primit(QRHO))
+      pre = max(smallp, primit(QPRES))
+      temp = max(small, primit(QTEMP))
+      soundspeed = primit(QC)
+
+      chf_dterm[
+      vel(inorm) = primit(QVELX+inorm);
+      vel(itan1) = primit(QVELX+itan1);
+      vel(itan2) = primit(QVELX+itan2)]
+
+      do  ivar = 0,NKK-1
+        Y(ivar+1) = primit(QSPEC1+ivar)
+      enddo
+
+      denslope = pslope(QRHO)
+      preslope = pslope(QPRES)
+      chf_dterm[
+      dun  = pslope(QVELX+inorm);
+      dut1 = pslope(QVELX+itan1);
+      dut2 = pslope(QVELX+itan2)]
+
+c     compute wave speeds and eigen guano
+      call CKCVCoeff(temp,ICKWRK,RCKWRK,Cvs,IPolyOrder)
+      call CKCVCoeffAvg(Y,Cvs,a_298,b_298)
+
+      Cv = a_298(1)
+      do ivar = 2,IpolyOrder
+        Cv = Cv+a_298(ivar)*temp**(ivar-1)
+      enddo
+      call CKRgas(Y,ICKWRK,RCKWRK,Rgas)
+      Cp = Cv+Rgas
+      gamma = Cp/Cv
+
+      if (Cv == 0) then
+        gamma = 1.2
+      endif
+
+      c = sqrt(gamma*Rgas*temp)
+      c = c*0.01
+
+      upc = vel(inorm) + c
+      umc = vel(inorm) - c
+
+      alphap = half*( rho*dun/c + preslope/c**2)
+      alpham = half*(-rho*dun/c + preslope/c**2)
+
+      chf_dterm[
+      alpha0r  = denslope - preslope/c**2;
+      alpha0v1 = dut1;
+      alpha0v2 = dut2]
+
+c     extrapolate to the low side.
+
+      betam = -half*(one + min(umc,zero)*dtbydx)
+      beta0 = -half*       c            *dtbydx
+
+      if (vel(inorm).ge.zero) beta0 = zero
+
+      betap = -c*dtbydx
+      if (upc.ge.zero) betap = zero
+
+      denlo = alpha0r*beta0 + alphap*betap + rho + betam*denslope
+
+      chf_dterm[
+      vello(inorm) = alphap*betap*c/rho + vel(inorm) + betam*dun;
+      vello(itan1) = alpha0v1*beta0     + vel(itan1) + betam*dut1;
+      vello(itan2) = alpha0v2*beta0     + vel(itan2) + betam*dut2]
+
+      prelo = alphap*betap*c**2  + pre + betam*preslope
+
+c     extrapolate to the high side.
+
+      betap = half*(one - max(upc,zero)*dtbydx)
+      beta0 = half*c*dtbydx
+
+      if (vel(inorm).le.zero) beta0 = zero
+
+      betam = c*dtbydx
+      if (umc.le.zero) betam = zero
+
+      denhi= alpha0r*beta0 + alpham*betam + rho + betap*denslope
+
+      chf_dterm[
+      velhi(inorm)= -alpham*betam*c/rho + vel(inorm) + betap*dun;
+      velhi(itan1)= alpha0v1*beta0      + vel(itan1) + betap*dut1;
+      velhi(itan2)= alpha0v2*beta0      + vel(itan2) + betap*dut2]
+
+      prehi = alpham*betam*c**2 + pre + betap*preslope
+
+c     floors
+      prehi = max(prehi, smallp)
+      prelo = max(prelo, smallp)
+      denhi = max(denhi, smallr)
+      denlo = max(denlo, smallr)
+
+c     wacky flattening analog
+      if(useflat .eq. 1) then
+         call pointlimit(
+     $        rho, denlo,    denhi,
+     $        vel, vello,    velhi,
+     $        pre, prelo,    prehi)
+      endif
+
+c     put stuff back into holders
+      primlo(QRHO) = denlo
+      primhi(QRHO) = denhi
+
+      primlo(QPRES)= prelo
+      primhi(QPRES)= prehi
+
+      chf_dterm[
+      primlo(QVELX+inorm)= vello(inorm);
+      primlo(QVELX+itan1)= vello(itan1);
+      primlo(QVELX+itan2)= vello(itan2)]
+
+      chf_dterm[
+      primhi(QVELX+inorm)= velhi(inorm);
+      primhi(QVELX+itan1)= velhi(itan1);
+      primhi(QVELX+itan2)= velhi(itan2)]
+
+c leave mass fracs as it is for now
+      do ivar = 0,NKK-1
+        primlo(QSPEC1+ivar) = primit(QSPEC1+ivar)
+        primhi(QSPEC1+ivar) = primit(QSPEC1+ivar)
+      enddo
+
+      do  ivar = 0,NKK-1
+        Y(ivar+1) = primlo(QSPEC1+ivar)
+      enddo
+      call CKRgas(Y,ICKWRK,RCKWRK,Rgas)
+      Rgas = Rgas*0.0001
+      templo = prelo/(Rgas*denlo)
+
+      do  ivar = 0,NKK-1
+        Y(ivar+1) = primhi(QSPEC1+ivar)
+      enddo
+      call CKRgas(Y,ICKWRK,RCKWRK,Rgas)
+      Rgas = Rgas*0.0001
+      temphi = prehi/(Rgas*denhi)
+
+      primlo(QTEMP) = templo
+      primhi(QTEMP) = temphi
+
+      primlo(QC) = soundspeed
+      primhi(QC) = soundspeed
+
+      return 
+      end
+
+cccccccccccccccc
+      subroutine incsource(
+     &     chf_fra[prim],
+     &     chf_const_fra[source],
+     &     chf_const_real[scale],
+     &     chf_box[dcalc])
+
+      integer chf_ddecl[i;j;k], iv
+      real_t increment
+
+      do iv = 0,chf_ncomp[prim] - 1
+         chf_multido[dcalc;i;j;k]
+
+         increment = scale*source(chf_ix[i;j;k], iv)
+         prim(chf_ix[i;j;k], iv) = prim(chf_ix[i;j;k], iv) + increment
+
+         chf_enddo
+      enddo
+
+      return
+      end
+ccccccccccccccc
+      subroutine fluxassemble(
+     &     chf_fra[fluxregflux],
+     &     chf_const_fra[godunovflux],
+     &     chf_const_real[dr],
+     &     chf_const_int[idir],
+     &     chf_box[dcalc])
+
+      integer chf_ddecl[i;j;k], iv
+      real_t radius,newflux
+
+      chf_multido[dcalc;i;j;k]
+
+      if(idir.eq.0) then
+         radius = i*dr
+      else
+         radius = (i+0.5)*dr
+      endif
+
+      do iv = 0,chf_ncomp[fluxregflux] - 1
+
+         newflux = radius*godunovflux(chf_ix[i;j;k], iv)
+         if(  ((iv .eq. CMOMX).and.(idir.eq.0)).or.
+     &        ((iv .eq. CMOMY).and.(idir.eq.1))) then
+            newflux = newflux +
+     &           radius*godunovflux(chf_ix[i;j;k], CPRES)
+         endif
+
+         fluxregflux(chf_ix[i;j;k], iv) = newflux
+      enddo
+
+      chf_enddo
+
+      return
+      end
+cccccccccccccccc
+      subroutine prm2cons(
+     &     chf_box[dcalc],
+     &     chf_fra[u],
+     &     chf_const_fra[q])
+
+      integer chf_ddecl[i; j; k], idir, ivar
+      real_t kinetic, vel, dense, temp, energy
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+
+      chf_multido[dcalc; i;j;k]
+
+      dense = max(q(chf_ix[i;j;k], QRHO), smallr)
+c     density
+      u(chf_ix[i;j;k], CRHO) =  dense
+
+      kinetic = 0d0
+      do idir = 0, CH_SPACEDIM-1
+         vel = q(chf_ix[i;j;k], QVELX+idir)
+         kinetic = kinetic + half*vel*vel
+c     momentum
+         u(chf_ix[i;j;k], CMOMX+idir) =  dense*vel
+      enddo
+
+c     species densities
+      do ivar = 0,NKK-1
+        Y(ivar+1) = q(chf_ix[i;j;k], QSPEC1+ivar)
+        u(chf_ix[i;j;k], CSPEC1+ivar) = dense*Y(ivar+1)
+      enddo
+
+c     energy
+      temp = max(q(chf_ix[i;j;k],QTEMP),small)
+      call CKCVCoeff(temp, ICKWRK, RCKWRK, Cvs, IPolyOrder)
+      call CKCVCoeffAvg(Y,Cvs,a_298,b_298)
+      energy = a_298(IPolyOrder+1)
+      do ivar = 1,IPolyOrder
+        energy = energy + (b_298(ivar))*(temp**ivar)
+      enddo
+      energy = energy*0.0001 + kinetic
+      energy = energy*dense
+
+      u(chf_ix[i;j;k], CENG) = max(energy, small)
+
+      chf_enddo
+
+      return
+      end
+
+cccccccccccccccc
+      subroutine pointprm2cons(
+     &     chf_vr[conserved],
+     &     chf_vr[primitive])
+
+      integer ivar, idir
+      real_t kinetic, vel
+      real_t energy, dense, temp
+
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+
+      dense = max(primitive(QRHO), smallr)
+c     density
+      conserved(CRHO) =  dense
+ 
+      kinetic = 0d0
+      do idir = 0, CH_SPACEDIM-1
+         vel = primitive(QVELX+idir)
+         kinetic = kinetic + half*vel*vel
+c     momentum 
+         conserved(CMOMX+idir) =  dense*vel
+      enddo 
+ 
+c     species densities
+      do ivar = 0,NKK-1 
+        Y(ivar+1) = primitive(QSPEC1+ivar)
+        conserved(CSPEC1+ivar) = dense*Y(ivar+1)
+      enddo
+
+c     energy
+      temp = max(primitive(QTEMP),small)
+      call CKCVCoeff(temp, ICKWRK, RCKWRK, Cvs, IPolyOrder)
+      call CKCVCoeffAvg(Y,Cvs,a_298,b_298)
+      energy = a_298(IPolyOrder+1)
+      do ivar = 1,IPolyOrder 
+        energy = energy + (b_298(ivar))*(temp**ivar)
+      enddo
+      energy = energy*0.0001 + kinetic
+      energy = energy*dense
+
+      conserved(CENG) = max(energy, small)
+
+      return
+      end
+cccccccccccccccc
+      subroutine riemann(
+     &     chf_box[d],
+     &     chf_const_fra[ql],
+     &     chf_const_fra[qr],
+     &     chf_fra[fluxgod],
+     &     chf_const_int[facedir],
+     &     chf_int[nspec])
+
+      integer chf_ddecl[i; j; k], ivar, fd
+      real_t fluxvec(0:FNUM+nspec-1), fluxvecl(0:FNUM+nspec-1), fluxvecr(0:FNUM+nspec-1)
+      real_t primitivel(0:QNUM+nspec-1), primitiver(0:QNUM+nspec-1)
+      integer fnum,spacedim,qnum
+
+#include "EBEOSCommon.fh"
+
+      spacedim = CH_SPACEDIM
+      fnum = FNUM + nspec -1
+      qnum = QNUM + nspec -1
+
+      fd = facedir
+
+      chf_multido[d;i;j;k]
+
+      do ivar = 0, qnum
+         primitivel(ivar)  = ql(chf_ix[i;j;k], ivar)
+         primitiver(ivar)  = qr(chf_ix[i;j;k], ivar)
+      enddo
+
+      call pointgetflux(fluxvecl, fnum, primitivel, qnum, fd)
+      call pointgetflux(fluxvecr, fnum, primitiver,qnum, fd)
+      call getRoeflux(fluxvec, fnum, fluxvecl, fnum, fluxvecr, fnum, primitivel, qnum, primitiver, qnum, fd, nspec,i,j)
+
+      do ivar = 0, fnum
+        fluxgod(chf_ix[i;j;k], ivar) = fluxvec(ivar)
+      enddo
+
+      chf_enddo
+
+      return
+      end
+ccccccccccccccc
+      subroutine pointriemann(
+     &     chf_vr[priml],
+     &     chf_vr[primr],
+     &     chf_vr[fluxvec],
+     &     chf_const_int[facedir],
+     &     chf_int[nspec])
+
+      integer chf_ddecl[i;j;k]
+      real_t  fluxvecl(0:FNUM+nspec-1), fluxvecr(0:FNUM+nspec-1)
+      integer fnum,spacedim,qnum
+
+#include "EBEOSCommon.fh"
+
+      spacedim = CH_SPACEDIM
+      qnum = QNUM - 1 + nspec
+      fnum = FNUM - 1 + nspec
+
+      call pointgetflux(fluxvecl, fnum, priml, qnum, facedir)
+      call pointgetflux(fluxvecr, fnum, primr, qnum, facedir)
+      call getRoeflux(fluxvec, fnum, fluxvecl, fnum, fluxvecr, fnum, priml, qnum, primr, qnum, facedir, nspec,0,0)
+
+      return
+      end
+cccccccccccccccc
+      subroutine pointgetflux(
+     &     chf_vr[flux],
+     &     chf_vr[primitive],
+     &     chf_const_int[facedir])
+
+      integer ivar,idir,spacedim
+      integer chf_ddecl[inorm; itan1; itan2]
+      integer chf_ddecl[inormc;itanc1;itanc2]
+      real_t dense, chf_ddecl[u; v; w], press, energy, temp, kinetic
+      real_t momenflux(0:CH_SPACEDIM-1), vel(0:CH_SPACEDIM-1)
+
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+
+      spacedim = CH_SPACEDIM
+
+      chf_dterm[
+      inorm = facedir;
+      itan1 = mod(facedir + 1,spacedim);
+      itan2 = mod(facedir + 2,spacedim)]
+
+      chf_dterm[
+      inormc = facedir;
+      itanc1 = mod(facedir + 1,spacedim);
+      itanc2 = mod(facedir + 2,spacedim)]
+
+      dense = max(primitive(QRHO), smallr)
+     
+      do idir = 0, CH_SPACEDIM-1
+        vel(idir) = primitive(QVELX+idir)
+      enddo
+ 
+      chf_dterm[
+      u = vel(inorm);
+      v = vel(itan1);
+      w = vel(itan2)]
+
+      chf_dterm[kinetic = u*u; + v*v; + w*w]
+      kinetic = kinetic*half
+
+      press = max(primitive(QPRES), smallp)
+
+      do ivar = 0,NKK-1
+        Y(ivar+1) = primitive(QSPEC1+ivar)
+      enddo 
+
+      temp = max(primitive(QTEMP),small)
+      call CKCVCoeff(temp, ICKWRK, RCKWRK, Cvs, IPolyOrder)
+      call CKCVCoeffAvg(Y,Cvs,a_298,b_298)
+      energy = a_298(IPolyOrder+1)
+      do ivar = 1,IPolyOrder
+        energy = energy + (b_298(ivar))*(temp**ivar)
+      enddo
+      energy = energy*0.0001 + kinetic
+      energy = energy*dense
+
+      chf_dterm[
+      momenflux(inormc) = dense*u*u + press;
+      momenflux(itanc1) = dense*u*v;
+      momenflux(itanc2) = dense*u*w]
+
+      flux(CRHO) = dense*u
+
+      do idir = 0,spacedim-1
+       flux(CMOMX+idir) = momenflux(idir)
+      enddo
+
+      flux(CENG) = u*(energy+press)
+
+      do ivar = 0,NKK-1
+       flux(FSPEC1+ivar) = dense*Y(ivar+1)
+      enddo
+
+      return
+      end
+cccccccccccccccc
+      subroutine getRoeflux(
+     &     chf_vr[flux],
+     &     chf_vr[fluxl],
+     &     chf_vr[fluxr],
+     &     chf_vr[priml],
+     &     chf_vr[primr],
+     &     chf_const_int[facedir],
+     &     chf_int[nspec],
+     &     chf_int[i],
+     &     chf_int[j])
+
+      real_t velocl(0:CH_SPACEDIM-1)
+      real_t velocr(0:CH_SPACEDIM-1)
+      integer chf_ddecl[inorm; itan1; itan2]
+      real_t rhol, rhor, Tl, Tr, Pl, Pr
+      real_t r, rhostar, Tstar, Hl, Hr, Hstar
+      real_t chf_ddecl[ustar; vstar; wstar]
+      real_t Yl(0:nspec-1),Yr(0:nspec-1),Ystar(0:nspec-1)
+      real_t hi, hil(0:nspec-1),hir(0:nspec-1),histar(0:nspec-1)
+      real_t phi(0:nspec-1)
+      integer spacedim, idir, ivar, qnum, cnum, fnum 
+      real_t g, Cp, Cv, Rgas, ke, Cstar
+      real_t a1, a2, a(0:nspec-1)
+      real_t W1(0:CNUM+nspec-1),W2(0:CNUM+nspec-1),W3(0:CNUM+nspec-1)
+      real_t s1,s2,s3,eps1,eps2,eps3
+      real_t conservedl(0:CNUM+nspec-1), conservedr(0:CNUM+nspec-1)
+      real_t rhorstar, rholstar, internlstar, internrstar, Tlstar, Trstar
+      integer physical, success
+      real_t soundspeedl, soundspeedr
+      real_t primlstar(0:QNUM+nspec-1), primrstar(0:QNUM+nspec-1)
+
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+
+      spacedim = CH_SPACEDIM
+      qnum = QNUM + nspec -1
+      cnum = CNUM + nspec -1
+      fnum = FNUM + nspec -1
+
+      rhol = max(priml(QRHO),smallr)
+      rhor = max(primr(QRHO),smallr)
+
+      r = sqrt(rhor/rhol)
+      rhostar = sqrt(rhol*rhor)
+
+       chf_dterm[
+      inorm = facedir;
+      itan1 = mod(facedir + 1,spacedim);
+      itan2 = mod(facedir + 2,spacedim)]
+
+      do idir = 0, spacedim-1
+       velocl(idir) = priml(QVELX+idir)
+       velocr(idir) = primr(QVELX+idir)
+      enddo
+
+      Pl = max(priml(QPRES),smallp)
+      Pr = max(primr(QPRES),smallp)
+
+      Tl = max(priml(QTEMP),small)
+      Tr = max(primr(QTEMP),small)
+
+      do ivar = 0,NKK-1
+       Yl(ivar) = priml(QSPEC1+ivar)
+       Yr(ivar) = primr(QSPEC1+ivar)
+      enddo
+      
+      chf_dterm[
+      ustar = (velocl(inorm)+r*velocr(inorm))/(1+r);
+      vstar = (velocl(itan1)+r*velocr(itan1))/(1+r);
+      wstar = (velocr(itan2)+r*velocr(itan2))/(1+r)]      
+
+      Tstar = (Tl+r*Tr)/(1+r)
+
+      call CKHBMS(Tl,Yl(0:nspec-1),ICKWRK,RCKWRK,Hl)
+      Hl = Hl*0.0001
+      call CKHBMS(Tl,Yr(0:nspec-1),ICKWRK,RCKWRK,Hr)
+      Hr = Hr*0.0001
+
+      chf_dterm[Hl= Hl+velocl(inorm)*velocl(inorm); + velocl(itan1)*velocl(itan1); + velocl(itan2)*velocl(itan2)]
+      chf_dterm[Hr= Hr+velocr(inorm)*velocr(inorm); + velocr(itan1)*velocr(itan1); + velocr(itan2)*velocr(itan2)]
+      
+      Hstar = (Hl+r*Hr)/(1+r)
+
+      do ivar = 0,NKK-1
+       Ystar(ivar) = (Yl(ivar)+r*Yr(ivar))/(1+r)
+      enddo
+
+      do ivar = 1,NKK
+       Y(1:NKK) = 0d0
+       Y(ivar) = 1
+       call CKHBMS(Tl,Y,ICKWRK,RCKWRK,hi)
+       hi = hi*0.0001
+       hil(ivar-1) = hi
+      enddo
+
+      do ivar = 1,NKK
+       Y(1:NKK) = 0d0
+       Y(ivar) = 1
+       call CKHBMS(Tr,Y,ICKWRK,RCKWRK,hi)
+       hi = hi*0.0001
+       hir(ivar-1) = hi
+      enddo
+
+      do ivar = 0,NKK-1
+        histar(ivar) = (hil(ivar) +r*hir(ivar))/(1+r)
+      enddo      
+
+      call CKCVCoeff(Tstar, ICKWRK, RCKWRK, Cvs, IPolyOrder)
+      call CKCVCoeffAvg(Ystar(0:nspec-1),Cvs,a_298,b_298)
+      Cv = a_298(1)
+      do ivar = 2,IPolyorder
+        Cv = Cv+a_298(ivar)*Tstar**(ivar-1)
+      enddo
+      call CKRgas(Ystar(0:nspec-1),ICKWRK,RCKWRK,Rgas)
+      Cp = Cv+Rgas
+      g = Cp/Cv
+
+      chf_dterm[ke = ustar*ustar; + vstar*vstar; + wstar*wstar]
+
+      Cstar = 0d0-(g-1)*(ke-Hstar)
+      do ivar = 0,NKK-1
+       phi(ivar) = (g-1)*(ke*0.5-histar(ivar))+0.0001*g*Rgas_s(ivar+1)*Tstar
+       Cstar = Cstar+phi(ivar)*Ystar(ivar)
+      enddo
+      Cstar = sqrt(Cstar)
+
+      a1 = (Pr-Pl - rhostar*Cstar*(velocr(inorm) - velocl(inorm)))/(2*Cstar*Cstar)
+      a2 = (Pr-Pl + rhostar*Cstar*(velocr(inorm) - velocl(inorm)))/(2*Cstar*Cstar)
+      do ivar = 0,NKK-1
+       a(ivar) = rhor*Yr(ivar) - rhol*Yl(ivar) - Ystar(ivar)*((Pr-Pl)/(Cstar*Cstar))
+      enddo
+
+      W1(CRHO) = 0d0
+      W2(CRHO) = 0d0
+      W3(CRHO) = 0d0
+
+      chf_dterm[
+       W1(CMOMX+inorm) = a1*(ustar-Cstar);
+       W1(CMOMX+itan1) = a1*vstar;
+       W1(CMOMX+itan2) = a1*wstar]
+
+      chf_dterm[
+       W2(CMOMX) = ustar*sum(a);
+       W2(CMOMY) = vstar*sum(a)+rhostar*(velocr(itan1) - velocl(itan1));
+       W2(CMOMZ) = wstar*sum(a)+rhostar*(velocr(itan2) - velocl(itan2))]
+
+      chf_dterm[
+       W3(CMOMX+inorm) = a2*(ustar+Cstar);
+       W3(CMOMX+itan1) = a2*vstar;
+       W3(CMOMX+itan2) = a2*wstar]
+
+      W1(CENG) = (Hstar - ustar*Cstar)*a1
+      W3(CENG) = (Hstar + ustar*Cstar)*a2
+      W2(CENG) = ke*sum(a)
+      do ivar=0,nspec-1
+        W2(CENG) = W2(CENG) - phi(ivar)*a(ivar)/(g-1)
+      enddo
+
+      chf_dterm[W2(CENG) = W2(CENG); +vstar*rhostar*(velocr(itan1) - velocl(itan1)); +wstar*rhostar*(velocr(itan2) - velocl(itan2))]
+
+      do ivar = 1,nspec
+        W1(CENG+ivar) = a1*Ystar(ivar-1)
+        W3(CENG+ivar) = a2*Ystar(ivar-1)
+        W2(CENG+ivar) = a(ivar)
+      enddo
+
+      call pointprm2cons(conservedl,cnum,priml,qnum)
+      call pointprm2cons(conservedr,cnum,primr,qnum)
+
+      do ivar = 0,CNUM+NKK-1
+       conservedl(ivar) = conservedl(ivar) + W1(ivar)
+       conservedr(ivar) = conservedr(ivar) - W3(ivar)
+      enddo
+
+      success = 1
+      call pointcons2prm(conservedl,cnum,primlstar,qnum,success,0)
+
+c      if (success == 0) then
+c       print*,'failed in Roeflux left'
+c       print*,'i',i
+c       print*,'j',j
+c       print*,'density right', rhor
+c       print*,'density left', rhol
+c       print*,'pressure left', Pl
+c       print*,'CStar', cstar
+c       print*,'HStar',hstar
+c       print*,'gamma',g
+c      endif
+  
+      success =1
+      call pointcons2prm(conservedr,cnum,primrstar,qnum,success,0)
+
+c      if (success == 0) then
+c       print*,'failed in Roeflux right'
+c       print*,'i',i
+c       print*,'j',j
+c       print*,'density left', rhol
+c       print*,'density right', rhor
+c       print*,'pressure right', Pr 
+c       print*,'CStar', cstar
+c      endif
+
+      physical = 1
+      rholstar = primlstar(QRHO)
+      rhorstar = primrstar(QRHO)
+
+      Tlstar = primlstar(QTEMP)
+      Trstar = primrstar(QTEMP)
+
+      do ivar = 0,NKK-1
+       Y(ivar+1) = primlstar(QSPEC1+ivar)
+      enddo
+
+      call CKCVCoeff(Tlstar, ICKWRK, RCKWRK, Cvs, IPolyOrder)
+      call CKCVCoeffAvg(Y,Cvs,a_298,b_298)
+      internlstar = a_298(IPolyOrder+1)
+      do ivar = 1,IPolyOrder
+        internlstar = internlstar + (b_298(ivar))*(Tlstar**ivar)
+      enddo
+      internlstar = internlstar*0.0001 
+
+      do ivar = 0,NKK-1
+       Y(ivar+1) = primrstar(QSPEC1+ivar)
+      enddo
+
+      call CKCVCoeff(Trstar, ICKWRK, RCKWRK, Cvs, IPolyOrder)
+      call CKCVCoeffAvg(Y,Cvs,a_298,b_298)
+      internrstar = a_298(IPolyOrder+1)
+      do ivar = 1,IPolyOrder
+        internrstar = internrstar + (b_298(ivar))*(Trstar**ivar)
+      enddo
+      internrstar = internrstar*0.0001
+
+      if (rholstar .le. 0d0 .or. rhorstar .le. 0d0) then
+        physical = 0
+      else if (internlstar .le. 0d0 .or. internrstar .le. 0d0) then
+        physical = 0
+      else
+        physical = 1
+      end if
+
+      soundspeedl = priml(QC)
+      soundspeedr = primr(QC)
+
+ccccc if physical = 0, switch to HLL flux
+
+      if ( physical == 0) then
+         s1 = min(velocl(inorm) - soundspeedl , velocr(inorm) - soundspeedr)
+         s3 = max(velocl(inorm) + soundspeedl , velocr(inorm) + soundspeedr)
+        if (s1.gt.0d0) then
+           flux = fluxl
+        else if (s1.le.0d0 .and. s3.ge.0d0) then
+           flux = (s3*fluxl - s1*fluxr + s1*s3*(conservedr+W3 - conservedl-W1))/(s3-s1)
+        else
+          flux = fluxr
+        end if
+      else
+        s1 = ustar - Cstar
+        s2 = ustar
+        s3 = ustar + Cstar
+
+        eps1 = max(0d0,(ustar-Cstar - velocl(inorm)+soundspeedl), (velocr(inorm)-soundspeedr - ustar+Cstar))
+        eps2 = max(0d0,(ustar-velocl(inorm)), (velocr(inorm)-ustar))
+        eps3 = max(0d0,(ustar+Cstar - velocl(inorm)-soundspeedl), (velocr(inorm)+soundspeedr - ustar-cstar))
+
+        if (abs(s1) .lt. eps1) then
+          s1 = (s1**2 + eps1**2)/(2*eps1)
+        end if
+
+        if (abs(s2) .lt. eps2) then
+          s2 = (s2**2 + eps2**2)/(2*eps2)
+        end if
+        if (abs(s3) .lt. eps3) then
+          s3 = (s3**2 + eps3**2)/(2*eps3)
+        end if
+
+        flux = 0.5*(fluxr + fluxl - abs(s1)*W1 - abs(s2)*W2 - abs(s3)*W3)
+      end if
+
+c sid added to test. 
+
+c      flux = 0.5*(fluxr + fluxl)
+
+c      flux(CRHO) = 0d0
+c      do ivar = 0,NKK-1
+c        flux(CRHO) = flux(CRHO) + flux(CSPEC1+ivar)
+c      enddo
+
+      return
+      end
+
+cccccccccccccccc
+      subroutine reactivesrc(
+     &      chf_box[dcalc],
+     &      chf_const_real[dt],
+     &      chf_fra[primitive])
+
+      real_t RPAR(3), sum
+      integer ivar, chf_ddecl[i;j;k]
+
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+
+      chf_multido[dcalc;i;j;k]
+
+! RPAR(1) = pressure, RPAR(2) = temperature, RPAR(3) = density
+
+      RPAR(1) = primitive(chf_ix[i;j;k], QPRES)
+      RPAR(2) = primitive(chf_ix[i;j;k], QTEMP)
+      RPAR(3) = primitive(chf_ix[i;j;k], QRHO)
+
+      do ivar = 0,NKK-1
+        Y(ivar+1) = primitive(chf_ix[i;j;k], QNUM+ivar)
+      enddo
+
+! solveODE is in dvode.f
+      call solveODE(Y,NKK,dt,RPAR)
+
+      sum = 0d0
+      do ivar = 0,NKK-1
+        sum = sum+Y(ivar+1)
+      enddo
+
+      do ivar = 0,NKK-1
+        primitive(chf_ix[i;j;k], QNUM+ivar) = Y(ivar+1)/sum
+      enddo
+
+      chf_enddo
+      return
+      end
+cccccccccccccccc
+      subroutine pointreactivesrc(
+     &    chf_const_real[dt],
+     &    chf_vr[primitive])
+
+      real_t RPAR(3), sum
+      integer ivar
+
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+
+      RPAR(1) = primitive(QPRES)
+      RPAR(2) = primitive(QTEMP)
+      RPAR(3) = primitive(QRHO)
+
+      do ivar = 0,NKK-1
+        Y(ivar+1) = primitive(QNUM+ivar)
+      enddo
+
+      call solveODE(Y,NKK,dt,RPAR)
+
+      sum = 0d0
+      do ivar = 0,NKK-1
+        sum = sum+Y(ivar+1)
+      enddo
+
+      do ivar = 0,NKK-1
+        primitive(QNUM+ivar) = Y(ivar+1)/sum
+      enddo
+
+      return
+      end  
+cccccccccccccccc
+      subroutine DYDT(chf_real[p], chf_real[t], chf_real[rho], chf_vr[MassFrac],chf_vr[ydot],chf_int[n])
+
+      integer ivar
+      real_t rhs(1:n)
+
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+
+      do ivar = 0,NKK-1
+        Y(ivar+1) = MassFrac(ivar)
+      enddo
+
+      call CKWmsYP(P,T,Y,ICKWRK,RCKWRK,rhs)
+
+      do ivar = 0,NKK-1
+        ydot(ivar) = rhs(ivar+1)/rho
+      enddo
+
+      return
+      end
+cccccccccccccccc
+      subroutine getrhocv(
+      &          chf_box[dcalc],
+      &          chf_const_fra[dense],
+      &          chf_const_fra[temperature],
+      &          chf_const_fra[massFrac],
+      &          chf_fra[rhoCv])
+
+      integer chf_ddecl[i;j;k], ivar
+      real_t rho, temp
+
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+
+      chf_multido[dcalc;i;j;k]
+      rho = dense(chf_ix[i;j;k],0)
+      temp = temperature(chf_ix[i;j;k],0)
+ 
+      do ivar = 1,NKK 
+         Y(ivar) = massFrac(chf_ix[i;j;k],ivar-1)
+      enddo     
+ 
+      call CKCVCoeff(temp, ICKWRK, RCKWRK, Cvs, IPolyOrder)
+      call CKCVCoeffAvg(Y,Cvs,a_298,b_298)
+ 
+      rhoCv(chf_ix[i;j;k],0) = a_298(1)
+      do ivar = 2,IPolyOrder 
+         rhoCv(chf_ix[i;j;k],0) = rhoCv(chf_ix[i;j;k],0) + (a_298(ivar))*temp**(ivar-1)
+      enddo
+
+c convert erg/g to J/kg 
+      rhoCv(chf_ix[i;j;k],0) = rhoCv(chf_ix[i;j;k],0)*rho*0.0001
+ 
+      chf_enddo 
+      return 
+      end
+cccccccccccccccc
+      subroutine pointgetrhocv(
+      &          chf_const_real[rho],
+      &          chf_const_real[temp],
+      &          chf_const_vr[massFrac],
+      &          chf_real[rhoCv])
+
+      integer ivar
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+
+      do ivar = 1,NKK
+         Y(ivar) = massFrac(ivar-1)
+      enddo
+
+      call CKCVCoeff(temp, ICKWRK, RCKWRK, Cvs, IPolyOrder)
+      call CKCVCoeffAvg(Y,Cvs,a_298,b_298)
+ 
+      rhoCv = a_298(1)
+      do ivar = 2,IPolyOrder
+         rhoCv = rhoCv + (a_298(ivar))*temp**(ivar-1)
+      enddo
+ 
+c convert erg/g to J/kg
+      rhoCv = rhoCv*rho*0.0001
+
+      return
+      end
+ccccccccccccccc
+      subroutine getspecmassdiffcoeff(
+      &          chf_fra1[bcospec],
+      &          chf_fra[rhscospec],
+      &          chf_const_fra1[pressure],
+      &          chf_const_fra1[temperature],
+      &          chf_const_fra[specdense],
+      &          chf_const_int[ispec],
+      &          chf_box[dcalc])
+
+      integer chf_ddecl[i;j;k], ivar
+      real_t pres, temp, dens, WTM, sum
+
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+
+      chf_multido[dcalc;i;j;k]
+
+      pres = pressure(chf_ix[i;j;k])
+      temp = pressure(chf_ix[i;j;k])
+
+      dens = 0d0
+      do ivar = 0,NKK-1
+        dens = dens + specdense(chf_ix[i;j;k],ivar)
+      enddo
+  
+      do ivar = 1,NKK
+        Y(ivar) = specdense(chf_ix[i;j;k],ivar-1)/dens
+      enddo
+
+c convert pres and dens to CGS
+      pres = pres*10d0
+      dens = dens/1000d0  
+
+      call CKYTX(Y, ICKWRK, RCKWRK, X)
+      call CKMMWX(X, ICKWRK, RCKWRK, WTM)
+      call MCSDIF(pres,temp,NKK,RMCWRK,DJK)
+
+      sum = 0d0
+      do ivar = 1,NKK
+        sum = sum + Y(ivar)*DJK(ispec+1,ivar)
+      enddo   
+
+      bcospec(chf_ix[i;j;k]) = sum - WT(ispec+1)*DJK(ispec+1,ispec+1)/WTM
+      bcospec(chf_ix[i;j;k]) = dens*bcospec(chf_ix[i;j;k])
+
+c convert to SI -- g/cm to kg/m
+      bcospec(chf_ix[i;j;k]) = bcospec(chf_ix[i;j;k])/10d0 
+
+      do ivar = 0,NKK-1
+        if (ivar .ne. ispec) then
+          rhscospec(chf_ix[i;j;k],ivar) = dens*(sum*WT(ispec+1)/WT(ivar+1) - WT(ispec+1)*DJK(ispec+1,ivar+1)/WTM)/10d0
+        else
+          rhscospec(chf_ix[i;j;k],ivar) = 0d0 
+        end if
+      enddo
+
+      chf_enddo
+      return 
+      end
+cccccccccccccccc
+      subroutine pointgetspecmassdiffcoeff(
+      &          chf_real[bcospec],
+      &          chf_vr[rhscospec],
+      &          chf_const_real[pres],
+      &          chf_const_real[temp],
+      &          chf_const_vr[specdense],
+      &          chf_const_int[ispec])
+
+      integer ivar
+      real_t presCGS, dens, WTM, sum
+ 
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+      
+      dens = 0d0
+      do ivar = 0,NKK-1
+        dens = dens + specdense(ivar)
+      enddo
+   
+      do ivar = 1,NKK
+        Y(ivar) = specdense(ivar-1)/dens
+      enddo
+ 
+c convert pres and dens to CGS
+      presCGS = pres*10d0
+      dens = dens/1000d0
+ 
+      call CKYTX(Y, ICKWRK, RCKWRK, X)
+      call CKMMWX(X, ICKWRK, RCKWRK, WTM)
+      call MCSDIF(presCGS,temp,NKK,RMCWRK,DJK)
+ 
+      sum = 0d0
+      do ivar = 1,NKK
+        sum = sum + Y(ivar)*DJK(ispec+1,ivar)
+      enddo
+ 
+      bcospec = sum - WT(ispec+1)*DJK(ispec+1,ispec+1)/WTM
+      bcospec = dens*bcospec
+
+c convert to SI -- g/cm to kg/m
+      bcospec = bcospec/10d0
+ 
+      do ivar = 0,NKK-1
+        if (ivar .ne. ispec) then
+          rhscospec(ivar) = dens*(sum*WT(ispec+1)/WT(ivar+1) - WT(ispec+1)*DJK(ispec+1,ivar+1)/WTM)/10d0
+        else
+          rhscospec(ivar) = 0d0
+        end if
+      enddo
+
+      return
+      end 
+cccccccccccccccc
+      subroutine getviscosity(
+      &          chf_fra1[eta],
+      &          chf_fra1[lambda],
+      &          chf_const_fra1[temperature],
+      &          chf_const_fra[specdense],
+      &          chf_box[dcalc])
+ 
+      integer chf_ddecl[i;j;k],ivar
+      real_t temp,dens,visc,WTM
+ 
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+ 
+      chf_multido[dcalc;i;j;k]
+
+      temp = temperature(chf_ix[i;j;k])
+      
+      dens = 0d0
+      do ivar = 0,NKK-1
+        dens = dens + specdense(chf_ix[i;j;k],ivar)
+      enddo
+   
+      do ivar = 1,NKK
+        Y(ivar) = specdense(chf_ix[i;j;k],ivar-1)/dens
+      enddo
+ 
+      dens = dens/1000d0
+ 
+      call CKYTX(Y, ICKWRK, RCKWRK, X)
+      call CKMMWX(X, ICKWRK, RCKWRK, WTM)
+      call MCAVIS(temp,X,RMCWRK,visc)
+ 
+c convert visc in g/cm to kg/m     
+      eta(chf_ix[i;j;k]) = visc/10d0   
+      lambda(chf_ix[i;j;k]) = -2*visc/3
+ 
+      chf_enddo
+      return
+      end 
+cccccccccccccccc
+      subroutine pointgetviscosity(
+      &          chf_real[eta],
+      &          chf_real[lambda],
+      &          chf_const_real[temp],
+      &          chf_const_vr[specdense])
+
+      integer ivar
+      real_t dens,WTM,visc
+
+#include "EBEOSCommon.fh" 
+#include "EBREACTIVECommon.fh"
+
+      dens = 0d0 
+      do ivar = 0,NKK-1 
+        dens = dens + specdense(ivar)
+      enddo 
+    
+      do ivar = 1,NKK 
+        Y(ivar) = specdense(ivar-1)/dens
+      enddo 
+  
+      dens = dens/1000d0 
+  
+      call CKYTX(Y, ICKWRK, RCKWRK, X) 
+      call CKMMWX(X, ICKWRK, RCKWRK, WTM)
+      call MCMODAVIS(temp,X,RMCWRK,visc) 
+  
+c convert visc in g/cm to kg/m      
+      eta = visc/10d0
+      lambda = -2*visc/3
+
+      return
+      end
+cccccccccccccccc 
+      subroutine getconductivity(
+      &          chf_fra1[kappa],
+      &          chf_const_fra1[temperature],
+      &          chf_const_fra[specdense],
+      &          chf_box[dcalc])
+
+      integer chf_ddecl[i;j;k], ivar
+      real_t temp, dens,WTM,cond
+
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+
+      chf_multido[dcalc;i;j;k]     
+
+      temp = temperature(chf_ix[i;j;k])
+
+      dens = 0d0
+      do ivar = 0,NKK-1
+        dens = dens + specdense(chf_ix[i;j;k],ivar)
+      enddo
+
+      do ivar = 1,NKK
+        Y(ivar) = specdense(chf_ix[i;j;k],ivar-1)/dens
+      enddo
+
+      dens = dens/1000d0
+
+      call CKYTX(Y, ICKWRK, RCKWRK, X)
+      call CKMMWX(X, ICKWRK, RCKWRK, WTM)
+      call MCACON(temp,X,RMCWRK,cond)
+
+c convert cond in erg/cm to J/m
+      kappa(chf_ix[i;j;k]) = cond*0.00001
+
+      chf_enddo
+      return
+      end
+cccccccccccccccc
+      subroutine pointgetconductivity(
+      &          chf_real[kappa],
+      &          chf_const_real[temp],
+      &          chf_const_vr[specdense])
+
+      integer ivar
+      real_t dens,WTM,cond
+ 
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+ 
+      dens = 0d0
+      do ivar = 0,NKK-1
+        dens = dens + specdense(ivar)
+      enddo
+   
+      do ivar = 1,NKK
+        Y(ivar) = specdense(ivar-1)/dens
+      enddo
+   
+      dens = dens/1000d0
+   
+      call CKYTX(Y, ICKWRK, RCKWRK, X)
+      call CKMMWX(X, ICKWRK, RCKWRK, WTM)
+      call MCACON(temp,X,RMCWRK,cond)
+   
+c convert cond in erg/cm to J/m
+      kappa = cond*0.00001
+ 
+      return
+      end
+ccccccccccccccccccccccccccccc
+      subroutine filldkmatrix(
+      &          chf_box[dcalc],
+      &          chf_const_fra[pressure],
+      &          chf_const_fra[temperature],
+      &          chf_const_fra[massFrac],
+      &          chf_fra[DiffCoeff])
+
+      integer chf_ddecl[i;j;k],ivar,ivar1,ivar2,ivar3
+      real_t pres,temp,WTM
+
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+
+      chf_multido[dcalc;i;j;k]
+      pres = pressure(chf_ix[i;j;k],0)
+      temp = temperature(chf_ix[i;j;k],0)
+      do ivar = 1,NKK
+         Y(ivar) = massFrac(chf_ix[i;j;k],ivar-1)
+      enddo
+      call CKYTX(Y, ICKWRK, RCKWRK, X)
+      call CKMMWX(X, ICKWRK, RCKWRK, WTM)
+      call MCSDIF(pres,temp,NKK,RMCWRK,DJK) ! DJK declared in EBREACTIVECommon
+      do ivar1 = 0,NKK-1
+        do ivar2 =  0,NKK-1
+          DiffCoeff(chf_ix[i;j;k],NKK*ivar1+ivar2) = 0
+          do ivar3 = 1,NKK
+            DiffCoeff(chf_ix[i;j;k],NKK*ivar1+ivar2) = DiffCoeff(chf_ix[i;j;k],NKK*ivar1+ivar2) + Y(ivar3)*DJK(ivar1+1,ivar3)
+          enddo
+          DiffCoeff(chf_ix[i;j;k],NKK*ivar1+ivar2) = DiffCoeff(chf_ix[i;j;k],NKK*ivar1+ivar2)*WT(ivar1+1)/WT(ivar2+1) - WT(ivar+1)*DJK(ivar1+1,ivar2+1)/WTM
+        enddo
+      enddo
+
+      chf_enddo
+      return
+      end
+cccccccccccccccccccccccccccc
+      subroutine pointfilldkmatrix(
+      &          chf_const_real[pressure],
+      &          chf_const_real[temperature],
+      &          chf_const_vr[massFrac],
+      &          chf_vr[DiffCoeff])
+
+      integer ivar,ivar1,ivar2,ivar3
+      real_t WTM
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+
+      do ivar = 1,NKK
+         Y(ivar) = massFrac(ivar-1)
+      enddo
+
+      call CKYTX(Y, ICKWRK, RCKWRK, X)
+      call CKMMWX(X, ICKWRK, RCKWRK, WTM)
+      call MCSDIF(pressure,temperature,NKK,RMCWRK,DJK)
+      do ivar1 = 0,NKK-1
+        do ivar2 =  0,NKK-1
+          DiffCoeff(NKK*ivar1+ivar2) = 0
+          do ivar3 = 1,NKK
+            DiffCoeff(NKK*ivar1+ivar2) = DiffCoeff(NKK*ivar1+ivar2) + Y(ivar3)*DJK(ivar1+1,ivar3)
+          enddo
+          DiffCoeff(NKK*ivar1+ivar2) = DiffCoeff(NKK*ivar1+ivar2)*WT(ivar1+1)/WT(ivar2+1) - WT(ivar+1)*DJK(ivar1+1,ivar2+1)/WTM
+        enddo
+      enddo
+
+      return
+      end
+ccccccccccccccccccccccccccccc
+      subroutine fillviscandconductivecoeff(
+      &    chf_box[dcalc],
+      &    chf_const_fra[massFrac],
+      &    chf_const_fra[dense],
+      &    chf_const_fra[temperature],
+      &    chf_fra[aco],
+      &    chf_fra[mu],
+      &    chf_fra[lambda],
+      &    chf_fra[kappa])
+
+      integer chf_ddecl[i;j;k],ivar
+      real_t temp,visc,cond,WTM,rho
+
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+
+      chf_multido[dcalc;i;j;k]
+      temp = temperature(chf_ix[i;j;k],0)
+      rho = dense(chf_ix[i;j;k],0)
+      do ivar = 0,NKK-1
+        Y(ivar+1) = massFrac(chf_ix[i;j;k],ivar)
+      enddo
+
+      call CKYTX(Y, ICKWRK, RCKWRK, X)
+      call CKMMWX(X, ICKWRK, RCKWRK, WTM)
+      call MCMODAVIS(temp,X,RMCWRK,visc)
+      call MCACON(temp,X,RMCWRK,cond)
+
+      mu(chf_ix[i;j;k],0) = visc
+      lambda(chf_ix[i;j;k],0) = -2*visc/3
+      kappa(chf_ix[i;j;k],0) = cond
+
+      call CKCVCoeff(temp, ICKWRK, RCKWRK, Cvs, IPolyOrder)
+      call CKCVCoeffAvg(Y,Cvs,a_298,b_298)
+
+      aco(chf_ix[i;j;k],0) = a_298(1)
+      do ivar = 2,IPolyOrder
+         aco(chf_ix[i;j;k],0) = aco(chf_ix[i;j;k],0) + (a_298(ivar))*temp**(ivar-1)
+      enddo
+      aco(chf_ix[i;j;k],0) = aco(chf_ix[i;j;k],0)*rho
+
+      chf_enddo
+      return
+      end
+ccccccccccccccccccccccccccccc
+      subroutine pointfillviscandconductivecoeff(
+      &    chf_const_vr[massFrac],
+      &    chf_const_real[dense],
+      &    chf_const_real[temperature],
+      &    chf_real[aco],
+      &    chf_real[mu],
+      &    chf_real[lambda],
+      &    chf_real[kappa])
+
+      integer ivar,WTM
+
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+
+      do ivar = 0,NKK-1
+        Y(ivar+1) = massFrac(ivar)
+      enddo
+      call CKYTX(Y, ICKWRK, RCKWRK, X)
+      call CKMMWX(X, ICKWRK, RCKWRK, WTM)
+      call MCMODAVIS(temperature,X,RMCWRK,mu)
+      call MCACON(temperature,X,RMCWRK,kappa)
+
+      lambda = -2*mu/3
+
+      call CKCVCoeff(temperature, ICKWRK, RCKWRK, Cvs, IPolyOrder)
+      call CKCVCoeffAvg(Y,Cvs,a_298,b_298)
+
+      aco = a_298(1)
+      do ivar = 2,IPolyOrder
+         aco = aco + (a_298(ivar))*temperature**(ivar-1)
+      enddo
+      aco = aco*dense
+
+      return
+      end
+cccccccccccccccc
+      subroutine brent_method(chf_real[T],chf_real[a],chf_real[b],chf_real[cvtemp],chf_int[success])
+
+cccc  NOTE: this routine expects inputs in CGS units
+
+      real_t Tr,c,fa,fb,fc,s,fs,tmp,tmp2,d
+      logical :: sss, mflag
+      integer iter,maxiter
+      real_t err,tol,functionT
+
+#include "EBEOSCommon.fh"
+#include "EBREACTIVECommon.fh"
+
+      maxiter = 1000
+      tol = 1d-7
+      iter = 1
+      err = 1d0
+
+
+      Tr = (a+b)/2
+      sss = .true.
+      call CKCVCoeff(a,ICKWRK,RCKWRK,Cvs,IPolyOrder)
+      call CKCVCoeffAvg(Y,Cvs,a_298,b_298)
+      fa = functionT(cvtemp-a_298(IPolyOrder+1),b_298,a)
+
+      call CKCVCoeff(b,ICKWRK,RCKWRK,Cvs,IPolyOrder)
+      call CKCVCoeffAvg(Y,Cvs,a_298,b_298)
+      fb = functionT(cvtemp-a_298(IPolyOrder+1),b_298,b)
+
+      if (fa * fb >= 0d0) then
+       if (fa < fb) then
+         T = a
+       else
+         T = b
+       end if
+       success = 0
+       print*, 'root not in between a and b'
+      else
+       if (abs(fa) < abs(fb)) then
+         tmp = a
+         a = b
+         b = tmp
+         tmp = fa
+         fa = fb
+         fb = tmp
+       end if
+
+       c = a
+       fc = fa
+       mflag = .true.
+       iter = 0
+
+       do while (.not.(fb == 0) .and. (abs(a-b) > tol))
+         if(.not.(fa == fc) .and. .not.(fb == fc)) then
+           s = a*fb*fc/(fa-fb)/(fa-fc) + b*fa*fc/(fb-fa)/(fb-fc) + c*fa*fb/(fc-fa)/(fc-fb)
+         else
+           s = b-fb*(b-a)/(fb-fa)
+         end if
+         tmp2 = (3*a+b)/4
+         if((.not.(((s > tmp2) .and. (s < b)) .or. ((s < tmp2) .and. (s > b)))) .or. (mflag .and. abs(s-b) >= abs(b-c)/2) .or. (.not. mflag .and. abs(s-b) >= abs(c-d)/2)) then
+           s = (a+b)/2
+           mflag = .true.
+         else
+           if ((mflag .and. abs(b-c) < tol) .or. (.not. mflag .and. abs(c-d) < tol)) then
+             s = (a+b)/2
+             mflag = .true.
+           else
+             mflag = .false.
+           end if
+         end if
+         call CKCVCoeff(s,ICKWRK,RCKWRK,Cvs,IPolyOrder)
+         call CKCVCoeffAvg(Y,Cvs,a_298,b_298)
+         fs = functionT(cvtemp-a_298(IPolyOrder+1),b_298,s)
+         d = c
+         c = b
+         fc = fb
+         if (fa*fs < 0d0) then
+           b = s
+           fb = fs
+         else
+           a = s
+           fa = fs
+         end if
+         if (abs(fa) < abs(fb)) then
+           tmp = a
+           a = b
+           b = tmp
+           tmp = fa
+           fa  = fb
+           fb = tmp
+         end if
+         iter = iter + 1
+         if (iter > maxiter) then
+           sss = .false.
+           print*, 'Brent method failed to converge'
+         end if
+        end do
+        T = b
+      end if
+c end Brent method
+      if (.not. sss) then
+         T = Tr   !unchanged
+      else
+         T = max(min(T,MaxTempI),MinTempI)
+      endif
+
+      return
+      end
+ccccccccccccccccccc
+     
+
+

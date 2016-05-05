@@ -1,0 +1,100 @@
+C      _______              __
+C     / ___/ /  ___  __ _  / /  ___
+C    / /__/ _ \/ _ \/  V \/ _ \/ _ \
+C    \___/_//_/\___/_/_/_/_.__/\___/
+C    Please refer to Copyright.txt, in Chombo's root directory.
+
+#include "CONSTANTS.H"
+ccccccccccc
+      subroutine getrelativegrad(
+     &     chf_fra1[du],
+     &     chf_const_fra1[u],
+     &     chf_const_int[idir],
+     &     chf_box[lobox],
+     &     chf_const_int[haslo],
+     &     chf_box[hibox],
+     &     chf_const_int[hashi],
+     &     chf_box[centerbox])
+
+      integer chf_ddecl[i   ;j   ;k   ]
+      integer chf_ddecl[ioff;joff;koff]
+      real_t diff, ave
+
+      chf_dterm[
+      ioff = chf_id(0,idir);
+      joff = chf_id(1,idir);
+      koff = chf_id(2,idir)]
+
+c     perform first difference calculation in the interior.
+
+      chf_multido[centerbox;i;j;k]
+
+      diff = half*
+     &     (  u(chf_ix[i+ioff;j+joff;k+koff])
+     &     -  u(chf_ix[i-ioff;j-joff;k-koff]))
+
+      ave = half*
+     &     (  u(chf_ix[i+ioff;j+joff;k+koff])
+     &     +  u(chf_ix[i-ioff;j-joff;k-koff]))
+
+      du(chf_ix[i;j;k]) = diff/ave
+
+      chf_enddo
+
+c     perform calculation on the cells adjacent to the domain boundary in
+c     current direction, if required.
+
+      if (haslo .eq. 1) then
+         chf_multido[lobox;i;j;k]
+         diff =
+     &        ( u(chf_ix[i+ioff;j+joff;k+koff])
+     &        - u(chf_ix[i     ;j     ;k     ]))
+         ave =half*
+     &        ( u(chf_ix[i+ioff;j+joff;k+koff])
+     &        + u(chf_ix[i     ;j     ;k     ]))
+
+         du(chf_ix[i;j;k]) = diff/ave
+
+         chf_enddo
+      endif
+
+      if (hashi .eq. 1) then
+         chf_multido[hibox;i;j;k]
+         diff =
+     &        ( u(chf_ix[i     ;j     ;k     ])
+     &        - u(chf_ix[i-ioff;j-joff;k-koff]))
+         ave = half*
+     &        ( u(chf_ix[i     ;j     ;k     ])
+     &        + u(chf_ix[i-ioff;j-joff;k-koff]))
+
+         du(chf_ix[i;j;k]) = diff/ave
+
+         chf_enddo
+      endif
+
+      return
+      end
+cccccccccccccccc
+      subroutine magnitude(
+     &     chf_fra1[magdata],
+     &     chf_const_fra[data],
+     &     chf_box[box])
+
+      integer chf_ddecl[i;j;k]
+      integer iv
+      real_t cur,sum
+
+      chf_multido[box;i;j;k]
+      sum = zero
+
+      do iv = 0,chf_ncomp[data]-1
+         cur = data(chf_ix[i;j;k],iv)
+         sum = sum + cur*cur
+      enddo
+
+      magdata(chf_ix[i;j;k]) = sqrt(sum)
+      chf_enddo
+
+      return
+      end
+cccccccccccccccccccc
