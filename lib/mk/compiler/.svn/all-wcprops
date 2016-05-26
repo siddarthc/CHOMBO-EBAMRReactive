@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/compiler
+END
+Make.defs.f77
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/compiler/Make.defs.f77
+END
+Make.defs.PathScale
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/compiler/Make.defs.PathScale
+END
+Make.defs.CC
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/compiler/Make.defs.CC
+END
+Make.defs.aCC
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/compiler/Make.defs.aCC
+END
+Make.defs.IBM
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/compiler/Make.defs.IBM
+END
+Make.defs.ftn
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/compiler/Make.defs.ftn
+END
+Make.defs.GNU
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/compiler/Make.defs.GNU
+END
+Make.defs.Intel
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/compiler/Make.defs.Intel
+END
+Make.defs.example
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/compiler/Make.defs.example
+END
+Make.defs.f90
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/compiler/Make.defs.f90
+END
+Make.defs.PGI
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/compiler/Make.defs.PGI
+END
+Make.defs.Lahey
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/compiler/Make.defs.Lahey
+END
+Make.defs.cxx
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/compiler/Make.defs.cxx
+END

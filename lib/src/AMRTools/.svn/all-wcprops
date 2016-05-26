@@ -1,0 +1,551 @@
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools
+END
+InterpFace.ChF
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/InterpFace.ChF
+END
+HalveIntF.ChF
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/HalveIntF.ChF
+END
+CornerCopier.H
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/CornerCopier.H
+END
+PiecewiseLinearFillPatch.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/PiecewiseLinearFillPatch.cpp
+END
+NodeMGInterp.H
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/NodeMGInterp.H
+END
+LevelFluxRegisterEdge.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/LevelFluxRegisterEdge.cpp
+END
+CFRegion.H
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/CFRegion.H
+END
+CFMatrixF.ChF
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/CFMatrixF.ChF
+END
+NodeNorms.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/NodeNorms.cpp
+END
+LevelFluxRegisterEdge.H
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/LevelFluxRegisterEdge.H
+END
+TensorCFInterp.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/TensorCFInterp.cpp
+END
+computeSum.H
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/computeSum.H
+END
+FineInterp.H
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/FineInterp.H
+END
+NodeNorms.H
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/NodeNorms.H
+END
+MaskValueF.ChF
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/MaskValueF.ChF
+END
+AverageFaceF.ChF
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/AverageFaceF.ChF
+END
+NodeBCF.ChF
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/NodeBCF.ChF
+END
+LevelFluxRegister.H
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/LevelFluxRegister.H
+END
+FineInterpFace.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/FineInterpFace.cpp
+END
+CoarseAverageCodim.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/CoarseAverageCodim.cpp
+END
+NodeLevelMGF.ChF
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/NodeLevelMGF.ChF
+END
+QuadCFStencil.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/QuadCFStencil.cpp
+END
+FineInterpFace.H
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/FineInterpFace.H
+END
+DotProduct.H
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/DotProduct.H
+END
+RegionGatherI.H
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/RegionGatherI.H
+END
+DerivStencil.H
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/DerivStencil.H
+END
+NodeDotProduct.H
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/NodeDotProduct.H
+END
+FourthOrderPatchInterp.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/FourthOrderPatchInterp.cpp
+END
+NodeSetOperations.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/NodeSetOperations.cpp
+END
+GNUmakefile
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/GNUmakefile
+END
+computeNorm.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/computeNorm.cpp
+END
+QuadCFInterpF.ChF
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/QuadCFInterpF.ChF
+END
+CFIVS.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/CFIVS.cpp
+END
+TensorCFIVS.H
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/TensorCFIVS.H
+END
+FourthOrderInterpStencil.H
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/FourthOrderInterpStencil.H
+END
+CoarseAverage.H
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/CoarseAverage.H
+END
+NodeCoarseAverage.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/NodeCoarseAverage.cpp
+END
+NodeQuadCFInterp2.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/NodeQuadCFInterp2.cpp
+END
+computeNorm.H
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/computeNorm.H
+END
+RegionGather.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/RegionGather.cpp
+END
+CFIVS.H
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/CFIVS.H
+END
+RegionGather.H
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/RegionGather.H
+END
+InterpF.ChF
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/InterpF.ChF
+END
+CoarseAverageFace.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/CoarseAverageFace.cpp
+END
+FourthOrderFineInterp.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/FourthOrderFineInterp.cpp
+END
+CFLeastSquares.F
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/CFLeastSquares.F
+END
+NodeBC.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/NodeBC.cpp
+END
+ExtrapFillPatch.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/ExtrapFillPatch.cpp
+END
+QuadCFInterp.H
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/QuadCFInterp.H
+END
+NodeMGInterp.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/NodeMGInterp.cpp
+END
+CoarseAverageFace.H
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/CoarseAverageFace.H
+END
+NodeIntegrals.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/NodeIntegrals.cpp
+END
+NodeBC.H
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/NodeBC.H
+END
+LevelFluxRegisterF.ChF
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/LevelFluxRegisterF.ChF
+END
+ExtrapFillPatch.H
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/ExtrapFillPatch.H
+END
+computeSum.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/computeSum.cpp
+END
+NodeIntegrals.H
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/NodeIntegrals.H
+END
+FineInterp.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/FineInterp.cpp
+END
+PiecewiseLinearFillPatch.H
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/PiecewiseLinearFillPatch.H
+END
+TensorCFInterp.H
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/TensorCFInterp.H
+END
+TensorFineStencilSet.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/TensorFineStencilSet.cpp
+END
+LevelFluxRegister.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/LevelFluxRegister.cpp
+END
+PiecewiseLinearFillPatchFace.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/PiecewiseLinearFillPatchFace.cpp
+END
+TensorFineStencilSet.H
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/TensorFineStencilSet.H
+END
+PiecewiseLinearFillPatchFace.H
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/PiecewiseLinearFillPatchFace.H
+END
+BaseFabIntPlusF.ChF
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/BaseFabIntPlusF.ChF
+END
+DotProduct.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/DotProduct.cpp
+END
+CoarseAverageCodim.H
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/CoarseAverageCodim.H
+END
+QuadCFStencil.H
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/QuadCFStencil.H
+END
+DerivStencil.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/DerivStencil.cpp
+END
+NodeDotProduct.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/NodeDotProduct.cpp
+END
+AverageF.ChF
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/AverageF.ChF
+END
+DotProdF.ChF
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/DotProdF.ChF
+END
+NodeAverageF.ChF
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/NodeAverageF.ChF
+END
+NodeDotProdF.ChF
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/NodeDotProdF.ChF
+END
+TensorCFIVS.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/TensorCFIVS.cpp
+END
+FourthOrderInterpStencil.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/FourthOrderInterpStencil.cpp
+END
+CoarseAverage.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/CoarseAverage.cpp
+END
+FourthOrderPatchInterp.H
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/FourthOrderPatchInterp.H
+END
+CFStencil.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/CFStencil.cpp
+END
+AverageCodimF.ChF
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/AverageCodimF.ChF
+END
+NodeSetOperations.H
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/NodeSetOperations.H
+END
+CFStencil.H
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/CFStencil.H
+END
+NodeCFIVS.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/NodeCFIVS.cpp
+END
+NodeCoarseAverage.H
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/NodeCoarseAverage.H
+END
+NodeQuadCFInterp2.H
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/NodeQuadCFInterp2.H
+END
+NodeCFIVS.H
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/NodeCFIVS.H
+END
+QuadCFInterp.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/QuadCFInterp.cpp
+END
+CornerCopier.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/CornerCopier.cpp
+END
+CFRegion.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/CFRegion.cpp
+END
+FourthOrderFineInterp.H
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/AMRTools/FourthOrderFineInterp.H
+END

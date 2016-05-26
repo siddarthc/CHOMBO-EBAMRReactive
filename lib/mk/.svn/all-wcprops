@@ -1,0 +1,185 @@
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/Chombo/!svn/ver/20935/release/3.1/lib/mk
+END
+dist.excludes.MF
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/dist.excludes.MF
+END
+Make.multidim.basic
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/Make.multidim.basic
+END
+Make.example.subdirs
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/Make.example.subdirs
+END
+tempnam.awk
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/tempnam.awk
+END
+Make.lib
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/Make.lib
+END
+Make.example.old
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/Make.example.old
+END
+Make.rules.multidim
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/Make.rules.multidim
+END
+Make.check
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/Make.check
+END
+compilerVersion.pl
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/compilerVersion.pl
+END
+Make.example.multidim
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/Make.example.multidim
+END
+Make.test
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/Make.test
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/README
+END
+Make.defs
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/Chombo/!svn/ver/19907/release/3.1/lib/mk/Make.defs
+END
+Make.defs.local.template
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/Make.defs.local.template
+END
+Make.printVariables
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/Make.printVariables
+END
+Make.defs.config
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/Make.defs.config
+END
+dist.excludes.EB
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/dist.excludes.EB
+END
+Make.defs.defaults
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/Chombo/!svn/ver/19814/release/3.1/lib/mk/Make.defs.defaults
+END
+Make.rules
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/Chombo/!svn/ver/19907/release/3.1/lib/mk/Make.rules
+END
+Make.example
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/Make.example
+END
+Make.rules.1d
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/Make.rules.1d
+END
+Makefile.am
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/Makefile.am
+END
+Make.rules.2d
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/Make.rules.2d
+END
+Make.rules.3d
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/Make.rules.3d
+END
+reverse
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/reverse
+END
+Make.rules.4d
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/Make.rules.4d
+END
+Make.rules.5d
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/Make.rules.5d
+END
+check
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/check
+END
+dist.excludes
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/dist.excludes
+END
+Make.rules.6d
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/Make.rules.6d
+END

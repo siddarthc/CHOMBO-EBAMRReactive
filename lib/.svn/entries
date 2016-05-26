@@ -1,0 +1,92 @@
+8
+
+dir
+20550
+https://anag-repo.lbl.gov/svn/Chombo/release/3.1/lib
+https://anag-repo.lbl.gov/svn/Chombo
+
+
+
+2012-03-13T06:37:57.225828Z
+19907
+dmartin
+has-props
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+c458f74e-99f2-40f8-9f0a-d519cfd9a9a7
+
+test
+dir
+
+doxygen.config
+file
+
+
+
+
+2012-08-22T21:17:56.000000Z
+cf7e5650107040360c02941018956dcb
+2012-03-06T23:27:37.255804Z
+19773
+noel
+
+doc
+dir
+
+doxygen.config.eb
+file
+
+
+
+
+2012-08-22T21:17:56.000000Z
+1e0e5d54c18a559ecd350ad6d4583d4a
+2012-03-06T23:27:37.255804Z
+19773
+noel
+
+mk
+dir
+
+src
+dir
+
+GNUmakefile
+file
+
+
+
+
+2012-08-22T21:17:56.000000Z
+8a4a6a91de3f11cc0b3e817db587f287
+2012-03-13T06:37:57.225828Z
+19907
+dmartin
+has-props
+
+GNUmakefile.python
+file
+
+
+
+
+2012-08-22T21:17:56.000000Z
+ca5a46c2c79691787232989c66f2a28c
+2012-03-06T23:27:37.255804Z
+19773
+noel
+
+util
+dir
+

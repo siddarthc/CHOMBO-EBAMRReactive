@@ -1,0 +1,413 @@
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/Chombo/!svn/ver/19831/release/3.1/lib/src/EBAMRElliptic
+END
+EBConductivityOp.H
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBConductivityOp.H
+END
+EBSimpleSolver.H
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBSimpleSolver.H
+END
+EBViscousTensorOp.H
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBViscousTensorOp.H
+END
+DirichletPoissonDomainBCF.ChF
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/DirichletPoissonDomainBCF.ChF
+END
+NeumannViscousTensorDomainBC.H
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/NeumannViscousTensorDomainBC.H
+END
+slowEBCOFactory.H
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/slowEBCOFactory.H
+END
+slowEBCO.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/slowEBCO.cpp
+END
+DirichletConductivityDomainBC.H
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/DirichletConductivityDomainBC.H
+END
+DirichletPoissonDomainBC.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/DirichletPoissonDomainBC.cpp
+END
+EBViscousTensorOpF.ChF
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBViscousTensorOpF.ChF
+END
+EBEllipticLoadBalance.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBEllipticLoadBalance.cpp
+END
+EBConductivityOpFactory.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBConductivityOpFactory.cpp
+END
+NeumannViscousTensorEBBC.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/NeumannViscousTensorEBBC.cpp
+END
+EBStenVarCoef.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBStenVarCoef.cpp
+END
+EBConductivityOpFactory.H
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBConductivityOpFactory.H
+END
+EBEllipticLoadBalance.H
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBEllipticLoadBalance.H
+END
+DirichletConductivityEBBC.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/DirichletConductivityEBBC.cpp
+END
+EBAMRPoissonOpFactory.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBAMRPoissonOpFactory.cpp
+END
+NeumannViscousTensorEBBC.H
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/NeumannViscousTensorEBBC.H
+END
+EBStenVarCoef.H
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBStenVarCoef.H
+END
+DirichletConductivityEBBC.H
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/DirichletConductivityEBBC.H
+END
+EBAMRPoissonOpFactory.H
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBAMRPoissonOpFactory.H
+END
+EBEllipticLoHiCenter.H
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBEllipticLoHiCenter.H
+END
+GNUmakefile
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/GNUmakefile
+END
+VarCoefStencil.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/VarCoefStencil.cpp
+END
+BaseDomainBC.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/BaseDomainBC.cpp
+END
+NeumannConductivityDomainBC.H
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/NeumannConductivityDomainBC.H
+END
+NeumannPoissonDomainBC.H
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/NeumannPoissonDomainBC.H
+END
+DirichletViscousTensorDomainBC.H
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/DirichletViscousTensorDomainBC.H
+END
+NeumannConductivityEBBC.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/NeumannConductivityEBBC.cpp
+END
+NeumannConductivityEBBC.H
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/NeumannConductivityEBBC.H
+END
+NeumannPoissonEBBC.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/NeumannPoissonEBBC.cpp
+END
+EBPoissonOpFactory.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBPoissonOpFactory.cpp
+END
+DirichletViscousTensorEBBC.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/Chombo/!svn/ver/19831/release/3.1/lib/src/EBAMRElliptic/DirichletViscousTensorEBBC.cpp
+END
+EBSimpleSolver.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBSimpleSolver.cpp
+END
+NeumannPoissonEBBC.H
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/NeumannPoissonEBBC.H
+END
+EBPoissonOpFactory.H
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBPoissonOpFactory.H
+END
+DirichletViscousTensorEBBC.H
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/DirichletViscousTensorEBBC.H
+END
+EBAMRPoissonOp.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBAMRPoissonOp.cpp
+END
+NeumannViscousTensorDomainBC.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/NeumannViscousTensorDomainBC.cpp
+END
+EBAMRPoissonOp.H
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBAMRPoissonOp.H
+END
+slowEBCOFactory.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/slowEBCOFactory.cpp
+END
+DirichletConductivityDomainBC.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/DirichletConductivityDomainBC.cpp
+END
+EBLevelTGA.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBLevelTGA.cpp
+END
+EBConductivityOpF.ChF
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBConductivityOpF.ChF
+END
+EBLevelTGA.H
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBLevelTGA.H
+END
+BaseBCValue.H
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/BaseBCValue.H
+END
+slowEBCO.H
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/slowEBCO.H
+END
+EBViscousTensorOpFactory.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBViscousTensorOpFactory.cpp
+END
+DirichletPoissonDomainBC.H
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/DirichletPoissonDomainBC.H
+END
+EBAMRPoissonOpF.ChF
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBAMRPoissonOpF.ChF
+END
+EBViscousTensorOpFactory.H
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBViscousTensorOpFactory.H
+END
+EBEllipticLoHiCenter.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBEllipticLoHiCenter.cpp
+END
+DirichletPoissonEBBC.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/DirichletPoissonEBBC.cpp
+END
+EBPoissonOp.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBPoissonOp.cpp
+END
+NeumannConductivityDomainBC.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/NeumannConductivityDomainBC.cpp
+END
+DirichletPoissonEBBC.H
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/DirichletPoissonEBBC.H
+END
+EBPoissonOp.H
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBPoissonOp.H
+END
+BaseBCFuncEval.H
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/BaseBCFuncEval.H
+END
+NeumannPoissonDomainBC.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/NeumannPoissonDomainBC.cpp
+END
+DirichletViscousTensorDomainBC.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/DirichletViscousTensorDomainBC.cpp
+END
+VarCoefStencil.H
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/VarCoefStencil.H
+END
+BaseDomainBC.H
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/BaseDomainBC.H
+END
+EBBackwardEuler.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBBackwardEuler.cpp
+END
+EBBackwardEuler.H
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBBackwardEuler.H
+END
+EBConductivityOp.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBConductivityOp.cpp
+END
+BaseEBBC.H
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/BaseEBBC.H
+END
+EBViscousTensorOp.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/EBAMRElliptic/EBViscousTensorOp.cpp
+END

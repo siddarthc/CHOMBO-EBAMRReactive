@@ -1,0 +1,605 @@
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop
+END
+BaseIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/BaseIF.H
+END
+LSquares.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/LSquares.cpp
+END
+NewGeometryShop.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/NewGeometryShop.cpp
+END
+ComputeCutCellMoments.H
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/ComputeCutCellMoments.H
+END
+TorusIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/TorusIF.H
+END
+NoRefinementImplem.H
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/NoRefinementImplem.H
+END
+PolynomialIF.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/PolynomialIF.cpp
+END
+CoordinateSystemImplem.H
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/CoordinateSystemImplem.H
+END
+PolynomialIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/PolynomialIF.H
+END
+LSProblemImplem.H
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/LSProblemImplem.H
+END
+ConstrainedLS.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/ConstrainedLS.cpp
+END
+HelicoilIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/HelicoilIF.H
+END
+TylerChannelIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/TylerChannelIF.H
+END
+UnionIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/UnionIF.H
+END
+ConstrainedLS.H
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/ConstrainedLS.H
+END
+PlaneIF.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/PlaneIF.cpp
+END
+IFid.H
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/IFid.H
+END
+MultiSphereIF.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/MultiSphereIF.cpp
+END
+NormalDerivative.H
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/NormalDerivative.H
+END
+DivNormalRefinementImplem.H
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/DivNormalRefinementImplem.H
+END
+PlaneIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/PlaneIF.H
+END
+DEMIF.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/DEMIF.cpp
+END
+MultiSphereIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/MultiSphereIF.H
+END
+MultiIndex.H
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/MultiIndex.H
+END
+HelixIF.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/HelixIF.cpp
+END
+DEMIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/DEMIF.H
+END
+GaussianIF.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/GaussianIF.cpp
+END
+MollifyIF.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/MollifyIF.cpp
+END
+HelixIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/HelixIF.H
+END
+TiltedCylinderIF.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/TiltedCylinderIF.cpp
+END
+LSProblem.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/LSProblem.cpp
+END
+MollifyIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/MollifyIF.H
+END
+Notation.H
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/Notation.H
+END
+CoordinateSystem.H
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/CoordinateSystem.H
+END
+EllipsoidIF.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/EllipsoidIF.cpp
+END
+TiltedCylinderIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/TiltedCylinderIF.H
+END
+ComputeCutCellMomentsImplem.H
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/ComputeCutCellMomentsImplem.H
+END
+SphereArrayIF.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/SphereArrayIF.cpp
+END
+SphereIF.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/SphereIF.cpp
+END
+GNUmakefile
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/GNUmakefile
+END
+CutCellMomentsImplem.H
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/CutCellMomentsImplem.H
+END
+SphereArrayIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/SphereArrayIF.H
+END
+ReferenceHeightIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/ReferenceHeightIF.H
+END
+DivNormalRefinement.H
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/DivNormalRefinement.H
+END
+RhodoneaIF.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/RhodoneaIF.cpp
+END
+RhodoneaIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/RhodoneaIF.H
+END
+NormalDerivativeImplem.H
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/NormalDerivativeImplem.H
+END
+IFInspector.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/IFInspector.cpp
+END
+GeometryShop.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/GeometryShop.cpp
+END
+FixedRefinementImplem.H
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/FixedRefinementImplem.H
+END
+SumIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/SumIF.H
+END
+IntersectionIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/IntersectionIF.H
+END
+ComputeCutCellMoments.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/ComputeCutCellMoments.cpp
+END
+TorusIF.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/TorusIF.cpp
+END
+CutCellMoments.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/CutCellMoments.cpp
+END
+IFDataImplem.H
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/IFDataImplem.H
+END
+EBGeomDebugOut.H
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/EBGeomDebugOut.H
+END
+CutCellMoments.H
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/CutCellMoments.H
+END
+LSquares.H
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/LSquares.H
+END
+NewGeometryShop.H
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/NewGeometryShop.H
+END
+HelicoilIF.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/HelicoilIF.cpp
+END
+TylerChannelIF.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/TylerChannelIF.cpp
+END
+UnionIF.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/UnionIF.cpp
+END
+IFSlicerImplem.H
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/IFSlicerImplem.H
+END
+NormalDerivative.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/NormalDerivative.cpp
+END
+RefinementCriterion.H
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/RefinementCriterion.H
+END
+FixedRefinement.H
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/FixedRefinement.H
+END
+Moments.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/Moments.cpp
+END
+ComplementIF.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/ComplementIF.cpp
+END
+Moments.H
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/Moments.H
+END
+ComplementIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/ComplementIF.H
+END
+IFidTable.H
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/IFidTable.H
+END
+IFData.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/IFData.cpp
+END
+DataFileIF.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/DataFileIF.cpp
+END
+TransformIF.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/TransformIF.cpp
+END
+PolarIF.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/PolarIF.cpp
+END
+IFData.H
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/IFData.H
+END
+DataFileIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/DataFileIF.H
+END
+GaussianIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/GaussianIF.H
+END
+NoRefinement.H
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/NoRefinement.H
+END
+TransformIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/TransformIF.H
+END
+IFSlicer.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/IFSlicer.cpp
+END
+GaussianSphereIF.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/GaussianSphereIF.cpp
+END
+EBGeomDebugDump.H
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/EBGeomDebugDump.H
+END
+PolarIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/PolarIF.H
+END
+LSProblem.H
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/LSProblem.H
+END
+BilinearIF.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/BilinearIF.cpp
+END
+IFSlicer.H
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/IFSlicer.H
+END
+GaussianSphereIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/GaussianSphereIF.H
+END
+EllipsoidIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/EllipsoidIF.H
+END
+BilinearIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/BilinearIF.H
+END
+SphereIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/SphereIF.H
+END
+LatheIF.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/LatheIF.cpp
+END
+LatheIF.H
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/LatheIF.H
+END
+SumIF.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/SumIF.cpp
+END
+IntersectionIF.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/IntersectionIF.cpp
+END
+IFInspector.H
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/IFInspector.H
+END
+GeometryShop.H
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/GeometryShop.H
+END
+MultiIndexImplem.H
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/MultiIndexImplem.H
+END
+EBGeomDebugOut.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/src/Workshop/EBGeomDebugOut.cpp
+END

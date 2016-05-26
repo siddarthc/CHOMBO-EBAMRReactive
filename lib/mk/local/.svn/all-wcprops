@@ -1,0 +1,119 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/Chombo/!svn/ver/20935/release/3.1/lib/mk/local
+END
+franklin.csh
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/Chombo/!svn/ver/19814/release/3.1/lib/mk/local/franklin.csh
+END
+Make.defs.hopper.gnu
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Chombo/!svn/ver/20935/release/3.1/lib/mk/local/Make.defs.hopper.gnu
+END
+Make.defs.bluegene
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/local/Make.defs.bluegene
+END
+jaguar.csh
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/Chombo/!svn/ver/19814/release/3.1/lib/mk/local/jaguar.csh
+END
+Make.defs.franklin.gnu
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/local/Make.defs.franklin.gnu
+END
+Make.defs.bluefire
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/local/Make.defs.bluefire
+END
+Make.defs.jaguar.gnu
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/local/Make.defs.jaguar.gnu
+END
+carver.csh
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/Chombo/!svn/ver/19814/release/3.1/lib/mk/local/carver.csh
+END
+Make.defs.franklin
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/local/Make.defs.franklin
+END
+Make.defs.ANAG
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/local/Make.defs.ANAG
+END
+Make.defs.jaguar
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/local/Make.defs.jaguar
+END
+Make.defs.smaug
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/local/Make.defs.smaug
+END
+hopper.csh
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/Chombo/!svn/ver/19814/release/3.1/lib/mk/local/hopper.csh
+END
+Make.defs.hopper.gfortran
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/local/Make.defs.hopper.gfortran
+END
+Make.defs.hera
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/local/Make.defs.hera
+END
+Make.defs.MacOSX.minimal
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/Chombo/!svn/ver/19814/release/3.1/lib/mk/local/Make.defs.MacOSX.minimal
+END
+Make.defs.grendel
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/local/Make.defs.grendel
+END
+Make.defs.carver
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Chombo/!svn/ver/19773/release/3.1/lib/mk/local/Make.defs.carver
+END
+symlinks.ANAG
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/Chombo/!svn/ver/19814/release/3.1/lib/mk/local/symlinks.ANAG
+END
